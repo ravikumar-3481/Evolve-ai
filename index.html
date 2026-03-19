@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EvolveAI | Modern Workspace</title>
+    <title>EvolveAI | Neon Command Center</title>
     
-    <!-- Modern Enterprise Fonts -->
+    <!-- Modern Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,34 +22,30 @@
     <!-- Google Identity Services (OAuth) -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-    <!-- Tailwind Config for Ultra-Modern Light Theme -->
+    <!-- Tailwind Config for Dark Neon Theme -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        heading: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        brand: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            400: '#818cf8',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            900: '#312e81',
+                        base: '#050505',
+                        surface: '#111111',
+                        surfaceAlt: '#1a1a1a',
+                        border: '#2a2a2a',
+                        neon: {
+                            cyan: '#00f2fe',
+                            purple: '#b026ff',
+                            green: '#00ff88',
+                            orange: '#ff6b6b'
                         },
-                        surface: '#ffffff',
-                        background: '#f8fafc',
-                        textMain: '#0f172a',
-                        textMuted: '#64748b',
+                        textMain: '#f8fafc',
+                        textMuted: '#94a3b8',
                     },
-                    boxShadow: {
-                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.03)',
-                        'float': '0 12px 30px -8px rgba(99, 102, 241, 0.15)',
-                        'inner-soft': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)',
-                    }
                 }
             }
         }
@@ -57,178 +53,178 @@
 
     <style>
         body {
-            background-color: #f8fafc;
-            color: #0f172a;
+            background-color: #050505;
+            color: #f8fafc;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
         
-        /* Elegant Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* Neon Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 10px; border: 1px solid #111; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f2fe; box-shadow: 0 0 10px #00f2fe; }
+
+        /* CSS Grid Layout using minmax */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+            gap: 1.5rem;
+            align-items: start;
+        }
+        
+        .grid-full {
+            grid-column: 1 / -1;
+        }
+
+        /* Neon Cards & Glassmorphism */
+        .neon-card {
+            background: #111111;
+            border: 1px solid #2a2a2a;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .neon-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.2), transparent);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+
+        .neon-card:hover {
+            border-color: #333;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+            transform: translateY(-2px);
+        }
+        
+        .neon-card:hover::before { opacity: 1; }
 
         .glass-nav {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .card {
-            background: #ffffff;
-            border: 1px solid #f1f5f9;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .card:hover {
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
-            transform: translateY(-2px);
-            border-color: #e2e8f0;
-        }
+        /* Typography Enhancements */
+        .text-glow-cyan { text-shadow: 0 0 15px rgba(0, 242, 254, 0.5); }
+        .text-glow-purple { text-shadow: 0 0 15px rgba(176, 38, 255, 0.5); }
+        .text-gradient-cyan { background: linear-gradient(to right, #00f2fe, #4facfe); -webkit-background-clip: text; color: transparent; }
+        .text-gradient-purple { background: linear-gradient(to right, #b026ff, #ff6b6b); -webkit-background-clip: text; color: transparent; }
 
         /* Animations */
-        @keyframes fadeUp { 
-            from { opacity: 0; transform: translateY(20px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
-        @keyframes slideIn { 
-            from { opacity: 0; transform: translateX(100%) scale(0.95); } 
-            to { opacity: 1; transform: translateX(0) scale(1); } 
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
         .notification-enter { animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 136, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.6); }
+        }
+        .status-new { animation: pulseGlow 2s infinite; border: 1px solid rgba(0, 255, 136, 0.5); color: #00ff88; background: rgba(0, 255, 136, 0.1); }
         
         .hidden-view { display: none !important; }
         
-        /* Highlight new rows gracefully */
-        @keyframes highlightRow {
-            0% { background-color: #eef2ff; }
-            100% { background-color: transparent; }
-        }
-        .new-row { 
-            animation: highlightRow 3s ease-out forwards; 
-            border-left: 3px solid #6366f1; 
-        }
-
-        /* Nav Link Hover Effects */
-        .nav-link {
-            position: relative;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background-color: #6366f1;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-            border-radius: 2px;
-        }
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 100%;
-        }
-        .nav-link.active {
-            color: #4f46e5;
-            font-weight: 600;
+        /* Table Row Enhancements */
+        .table-row { border-bottom: 1px solid #1f1f1f; transition: all 0.2s ease; }
+        .table-row:hover { background: #1a1a1a; }
+        
+        /* Modal Overlay */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
         }
     </style>
 </head>
-<body class="flex flex-col h-screen overflow-hidden selection:bg-brand-500 selection:text-white relative">
+<body class="flex flex-col h-screen overflow-hidden selection:bg-neon-cyan selection:text-base relative">
 
     <!-- GOOGLE OAUTH LOGIN SCREEN -->
-    <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-background">
-        <!-- Abstract Background -->
+    <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-base">
+        <!-- Abstract Neon Background -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-cyan rounded-full mix-blend-screen filter blur-[120px] opacity-20"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple rounded-full mix-blend-screen filter blur-[120px] opacity-20"></div>
         </div>
         
-        <div class="card p-10 max-w-md w-full text-center z-10 animate-fade-up relative mx-4 border border-white bg-white/60 backdrop-blur-xl">
-            <div class="w-20 h-20 bg-gradient-to-br from-brand-500 to-brand-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-float transform rotate-3">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="-rotate-3"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <div class="neon-card p-10 max-w-md w-full text-center z-10 animate-fade-up relative mx-4 border border-white/10 bg-surface/80 backdrop-blur-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+            <div class="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(0,242,254,0.3)] bg-gradient-to-br from-[#00f2fe] to-[#4facfe] transform rotate-3">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#050505" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="-rotate-3"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
-            <h2 class="text-3xl font-heading font-extrabold text-textMain mb-2 tracking-tight">Evolve Workspace</h2>
-            <p class="text-textMuted mb-8 text-sm font-medium">Enterprise Admin Authentication</p>
+            <h2 class="text-3xl font-heading font-black textMain mb-2 tracking-tight text-white">Evolve <span class="text-gradient-cyan">Command</span></h2>
+            <p class="text-textMuted mb-8 text-sm font-medium">Secure Administrative Terminal</p>
             
-            <!-- Google Sign-In Button Container -->
-            <div class="flex justify-center w-full mb-4 min-h-[44px]">
-                <div id="google-buttonDiv"></div>
+            <div class="flex justify-center w-full mb-4 min-h-[44px] bg-white rounded-md p-1">
+                <div id="google-buttonDiv" class="w-full"></div>
             </div>
             
-            <p id="login-error" class="text-red-600 text-sm mt-4 hidden font-medium bg-red-50 p-3 rounded-xl border border-red-100 flex items-center justify-center gap-2">
+            <p id="login-error" class="text-neon-orange text-sm mt-4 hidden font-medium bg-neon-orange/10 p-3 rounded-xl border border-neon-orange/30 flex items-center justify-center gap-2">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                Access Denied: Unrecognized account.
+                Authentication Failed. Unauthorized.
             </p>
             
-            <div class="mt-8 pt-6 border-t border-gray-200/60">
-                <p class="text-xs text-gray-400 font-medium">Protected by EvolveAI Secure OAuth 2.0</p>
+            <div class="mt-8 pt-6 border-t border-white/5">
+                <p class="text-xs text-gray-500 font-mono tracking-widest uppercase">Encrypted by OAuth 2.0</p>
             </div>
         </div>
     </div>
 
     <!-- MAIN APP STRUCTURE -->
-    <div id="app-container" class="flex flex-col w-full h-full hidden-view bg-background">
+    <div id="app-container" class="flex flex-col w-full h-full hidden-view bg-base">
         
-        <!-- MODERN TOP NAVBAR -->
-        <header class="glass-nav sticky top-0 z-50 w-full px-4 sm:px-8 py-4 flex justify-between items-center">
+        <!-- NEON GLASS NAVBAR -->
+        <header class="glass-nav sticky top-0 z-40 w-full px-4 sm:px-8 py-4 flex justify-between items-center shadow-lg shadow-black/50">
             <div class="flex items-center gap-8">
                 <!-- Logo -->
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-md">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <div class="flex items-center gap-3 group cursor-pointer">
+                    <div class="w-10 h-10 bg-gradient-to-br from-neon-cyan to-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(0,242,254,0.4)] group-hover:shadow-[0_0_25px_rgba(0,242,254,0.6)] transition-all">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#050505" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                     </div>
-                    <h2 class="text-xl font-heading font-extrabold tracking-tight text-textMain hidden sm:block">Evolve<span class="text-brand-600">AI</span></h2>
+                    <h2 class="text-xl font-heading font-black tracking-tight text-white hidden sm:block">Evolve<span class="text-neon-cyan">AI</span></h2>
                 </div>
 
-                <!-- Navigation Links -->
-                <nav class="hidden md:flex items-center gap-6">
-                    <button onclick="switchTab('dashboard')" id="tab-dashboard" class="nav-link active text-gray-500 hover:text-gray-900 font-semibold text-sm py-2 transition-colors flex items-center gap-2">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                        Dashboard & Data
+                <!-- Navigation Tabs -->
+                <nav class="flex items-center gap-2 bg-surfaceAlt p-1 rounded-xl border border-white/5">
+                    <button onclick="switchTab('dashboard')" id="tab-dashboard" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 bg-white/10 text-white shadow-sm">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                        <span class="hidden sm:inline">Workspace</span>
                     </button>
-                    <button onclick="switchTab('profile')" id="tab-profile" class="nav-link text-gray-500 hover:text-gray-900 font-semibold text-sm py-2 transition-colors flex items-center gap-2">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        Admin Profile
+                    <button onclick="switchTab('profile')" id="tab-profile" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-textMuted hover:text-white hover:bg-white/5">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span class="hidden sm:inline">Settings</span>
                     </button>
                 </nav>
             </div>
             
             <div class="flex items-center gap-4 sm:gap-6">
-                <!-- Smart Sync Indicator -->
-                <div id="sync-status" class="hidden sm:flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-gray-200 shadow-sm" title="Auto-fetching data">
-                    <span class="relative flex h-2.5 w-2.5">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                <!-- Sync Indicator -->
+                <div id="sync-status" class="hidden sm:flex items-center gap-2 bg-neon-green/10 px-3 py-1.5 rounded-full border border-neon-green/30 shadow-[0_0_10px_rgba(0,255,136,0.2)]">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-green opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-neon-green"></span>
                     </span>
-                    <span class="text-xs font-bold text-gray-600 uppercase tracking-wide">Live</span>
+                    <span class="text-[10px] font-mono font-bold text-neon-green uppercase tracking-widest">Live Sync</span>
                 </div>
 
-                <!-- User Profile & Dropdown -->
+                <!-- User Dropdown -->
                 <div class="relative group cursor-pointer flex items-center gap-3">
                     <div class="text-right hidden sm:block">
-                        <p class="text-sm font-bold text-gray-900 leading-tight">Ravi V.</p>
-                        <p class="text-xs text-brand-600 font-semibold">Super Admin</p>
+                        <p id="nav-user-name" class="text-sm font-bold text-white leading-tight">Admin</p>
+                        <p class="text-[10px] text-neon-cyan font-mono uppercase tracking-widest mt-0.5">Clearance: Max</p>
                     </div>
-                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=Ravi+Vishwakarma&background=4f46e5&color=fff" class="w-10 h-10 rounded-full shadow-sm border-2 border-white" alt="Admin">
+                    <img id="nav-user-avatar" src="https://ui-avatars.com/api/?name=Admin&background=00f2fe&color=050505" class="w-10 h-10 rounded-xl shadow-[0_0_10px_rgba(0,242,254,0.3)] border border-neon-cyan/50" alt="Admin">
                     
-                    <!-- Hover Dropdown Menu -->
-                    <div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right scale-95 group-hover:scale-100">
+                    <div class="absolute right-0 top-full mt-2 w-48 bg-surfaceAlt rounded-xl shadow-2xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
                         <div class="p-2">
-                            <button onclick="switchTab('profile')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg font-medium flex items-center gap-2 md:hidden">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                Profile
-                            </button>
-                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                            <button onclick="logout()" class="w-full text-left px-4 py-2.5 text-sm text-neon-orange hover:bg-neon-orange/10 rounded-lg font-medium flex items-center gap-2 transition-colors">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                                Sign Out
+                                Terminate Session
                             </button>
                         </div>
                     </div>
@@ -237,162 +233,166 @@
         </header>
 
         <!-- MAIN SCROLLABLE AREA -->
-        <main class="flex-1 overflow-y-auto w-full relative">
-            <div class="max-w-[1400px] mx-auto p-4 sm:p-6 lg:p-8">
+        <main class="flex-1 overflow-y-auto w-full relative pb-10">
+            <div class="max-w-[1600px] mx-auto p-4 sm:p-6 lg:p-8">
                 
-                <!-- DASHBOARD VIEW (Unified: Stats + Charts + Table) -->
-                <div id="view-dashboard" class="view-section animate-fade-up space-y-8">
+                <!-- DASHBOARD VIEW -->
+                <div id="view-dashboard" class="view-section animate-fade-up">
                     
-                    <!-- Welcome Text -->
-                    <div>
-                        <h1 class="text-3xl font-heading font-extrabold text-textMain">Welcome back, Ravi</h1>
-                        <p class="text-textMuted mt-1 font-medium">Here's what's happening with your agency today.</p>
+                    <div class="mb-8">
+                        <h1 class="text-3xl sm:text-4xl font-heading font-black text-white tracking-tight">System <span class="text-gradient-cyan">Overview</span></h1>
+                        <p class="text-textMuted mt-2 font-medium">Real-time data synchronization active. Monitoring inbound pipelines.</p>
                     </div>
 
-                    <!-- Stat Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="card p-6 border-l-4 border-l-brand-500 relative overflow-hidden group">
-                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-brand-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out opacity-50"></div>
-                            <div class="relative flex justify-between items-start">
-                                <div>
-                                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider">Total Leads</p>
-                                    <h3 id="stat-total" class="text-4xl font-heading font-extrabold text-gray-900 mt-2 tracking-tight">0</h3>
+                    <!-- MINMAX CSS GRID LAYOUT -->
+                    <div class="dashboard-grid">
+                        
+                        <!-- 1. ENHANCED TABLE (Order 1, Full Width) -->
+                        <div class="neon-card flex flex-col grid-full border-t-2 border-t-neon-cyan" style="order: 1;">
+                            <div class="p-5 border-b border-border bg-surfaceAlt flex flex-col sm:flex-row gap-4 justify-between items-center relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-64 h-full bg-gradient-to-l from-neon-cyan/5 to-transparent pointer-events-none"></div>
+                                
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 bg-neon-cyan/10 rounded-lg text-neon-cyan">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                    </div>
+                                    <h3 class="text-lg font-heading font-bold text-white">Inbound Lead Pipeline</h3>
                                 </div>
-                                <div class="p-3 bg-brand-50 text-brand-600 rounded-xl">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                
+                                <div class="flex w-full sm:w-auto flex-col sm:flex-row gap-3 relative z-10">
+                                    <div class="relative w-full sm:w-64">
+                                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                        </div>
+                                        <input type="text" id="search-input" placeholder="Search by name, email or ID..." class="w-full bg-base border border-border text-white rounded-lg pl-9 pr-4 py-2 text-sm font-medium focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan transition-all placeholder-gray-600">
+                                    </div>
+                                    
+                                    <select id="filter-subject" class="bg-base border border-border text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neon-cyan cursor-pointer font-medium">
+                                        <option value="All">All Intents</option>
+                                    </select>
+                                    
+                                    <button onclick="exportCSV()" class="bg-neon-cyan/10 hover:bg-neon-cyan/20 border border-neon-cyan/30 text-neon-cyan px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                        Export CSV
+                                    </button>
                                 </div>
+                            </div>
+                            
+                            <!-- Scrollable Table Wrapper -->
+                            <div class="overflow-x-auto bg-surface max-h-[500px] overflow-y-auto">
+                                <table class="w-full text-left border-collapse whitespace-nowrap md:whitespace-normal">
+                                    <thead class="sticky top-0 bg-surfaceAlt z-10 border-b border-border shadow-md">
+                                        <tr>
+                                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Client Identity</th>
+                                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Contact Info</th>
+                                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Intent / Subject</th>
+                                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Status / Time</th>
+                                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-body">
+                                        <!-- Rows injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 2. STATS (Order 2) -->
+                        <div class="neon-card p-6 flex flex-col justify-between" style="order: 2;">
+                            <div class="w-12 h-12 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center text-white mb-4">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-mono text-textMuted uppercase tracking-widest">Total Leads</p>
+                                <h3 id="stat-total" class="text-5xl font-heading font-black text-white mt-1">0</h3>
                             </div>
                         </div>
                         
-                        <div class="card p-6 border-l-4 border-l-emerald-500 relative overflow-hidden group">
-                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out opacity-50"></div>
-                            <div class="relative flex justify-between items-start">
-                                <div>
-                                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider">Leads Today</p>
-                                    <h3 id="stat-today" class="text-4xl font-heading font-extrabold text-gray-900 mt-2 tracking-tight">0</h3>
-                                </div>
-                                <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                                </div>
+                        <div class="neon-card p-6 flex flex-col justify-between relative overflow-hidden" style="order: 3;">
+                            <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-neon-green/20 rounded-full blur-2xl"></div>
+                            <div class="w-12 h-12 bg-neon-green/10 rounded-xl border border-neon-green/20 flex items-center justify-center text-neon-green mb-4 relative z-10">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                            </div>
+                            <div class="relative z-10">
+                                <p class="text-sm font-mono text-textMuted uppercase tracking-widest">Acquired Today</p>
+                                <h3 id="stat-today" class="text-5xl font-heading font-black text-white mt-1 text-glow-cyan">0</h3>
                             </div>
                         </div>
-                        
-                        <div class="card p-6 border-l-4 border-l-amber-500 relative overflow-hidden group">
-                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-amber-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out opacity-50"></div>
-                            <div class="relative flex justify-between items-start">
-                                <div>
-                                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider">Inquiry Types</p>
-                                    <h3 id="stat-subjects" class="text-4xl font-heading font-extrabold text-gray-900 mt-2 tracking-tight">0</h3>
-                                </div>
-                                <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Charts -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="card p-6 flex flex-col">
-                            <h3 class="text-lg font-heading font-extrabold text-gray-900 mb-6">Growth Timeline</h3>
+                        <div class="neon-card p-6 flex flex-col justify-between" style="order: 4;">
+                            <div class="w-12 h-12 bg-neon-purple/10 rounded-xl border border-neon-purple/20 flex items-center justify-center text-neon-purple mb-4">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-mono text-textMuted uppercase tracking-widest">Active Intents</p>
+                                <h3 id="stat-subjects" class="text-5xl font-heading font-black text-white mt-1">0</h3>
+                            </div>
+                        </div>
+
+                        <!-- 3. CHARTS (Order 5 & 6) -->
+                        <div class="neon-card p-6 flex flex-col col-span-1 lg:col-span-2" style="order: 5;">
+                            <h3 class="text-lg font-heading font-bold text-white mb-6 flex items-center gap-2">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-neon-cyan"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                                Volume Trajectory
+                            </h3>
                             <div class="flex-1 min-h-[250px] relative w-full">
                                 <canvas id="barChart"></canvas>
                             </div>
                         </div>
-                        <div class="card p-6 flex flex-col">
-                            <h3 class="text-lg font-heading font-extrabold text-gray-900 mb-6">Lead Distribution</h3>
+                        
+                        <div class="neon-card p-6 flex flex-col col-span-1" style="order: 6;">
+                            <h3 class="text-lg font-heading font-bold text-white mb-6 flex items-center gap-2">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-neon-purple"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+                                Intent Distribution
+                            </h3>
                             <div class="flex-1 min-h-[250px] relative w-full flex justify-center">
                                 <canvas id="pieChart"></canvas>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- DATA TABLE (Unified into Dashboard) -->
-                    <div class="card flex flex-col overflow-hidden mt-8">
-                        <div class="p-6 border-b border-gray-100 bg-white flex flex-col sm:flex-row gap-4 justify-between items-center">
-                            <h3 class="text-lg font-heading font-extrabold text-gray-900">Recent Submissions</h3>
-                            
-                            <div class="flex w-full sm:w-auto flex-col sm:flex-row gap-3">
-                                <div class="relative w-full sm:w-64">
-                                    <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                    </div>
-                                    <input type="text" id="search-input" placeholder="Search leads..." class="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-lg pl-10 pr-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all">
-                                </div>
-                                
-                                <select id="filter-subject" class="bg-gray-50 border border-gray-200 text-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 cursor-pointer font-semibold shadow-sm">
-                                    <option value="All">All Subjects</option>
-                                </select>
-                                <select id="sort-order" class="bg-gray-50 border border-gray-200 text-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 cursor-pointer font-semibold shadow-sm">
-                                    <option value="newest">Newest First</option>
-                                    <option value="oldest">Oldest First</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <!-- Table Wrapper -->
-                        <div class="overflow-x-auto bg-white max-h-[600px] overflow-y-auto">
-                            <table class="w-full text-left border-collapse whitespace-nowrap md:whitespace-normal">
-                                <thead class="sticky top-0 bg-gray-50/95 backdrop-blur z-10 border-b border-gray-200 shadow-sm">
-                                    <tr>
-                                        <th class="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Client Identity</th>
-                                        <th class="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Contact Info</th>
-                                        <th class="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Inquiry Details</th>
-                                        <th class="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Timestamp</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table-body" class="divide-y divide-gray-100">
-                                    <!-- Rows rendered seamlessly via JS -->
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
-
                 </div>
 
                 <!-- PROFILE VIEW -->
                 <div id="view-profile" class="view-section hidden-view animate-fade-up max-w-3xl mx-auto mt-4">
-                    <div class="card overflow-hidden">
-                        <div class="h-40 bg-gradient-to-r from-brand-600 to-indigo-800 relative">
-                            <!-- Abstract pattern -->
-                            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+                    <div class="neon-card overflow-hidden border-t-2 border-t-neon-purple">
+                        <div class="h-40 bg-gradient-to-r from-[#111] to-[#222] relative overflow-hidden border-b border-border">
+                            <!-- Matrix/Tech Pattern -->
+                            <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#b026ff 1px, transparent 1px), linear-gradient(90deg, #b026ff 1px, transparent 1px); background-size: 30px 30px;"></div>
+                            <div class="absolute bottom-0 right-0 w-64 h-64 bg-neon-purple/20 rounded-full filter blur-[80px]"></div>
                         </div>
-                        <div class="px-8 pb-10">
+                        <div class="px-8 pb-10 relative z-10">
                             <div class="relative flex justify-between items-end -mt-16 mb-6">
-                                <img id="profile-large-avatar" src="https://ui-avatars.com/api/?name=Ravi+Vishwakarma&background=ffffff&color=4f46e5&size=128" alt="Profile" class="w-32 h-32 rounded-2xl border-4 border-white shadow-lg bg-white relative z-10 object-cover">
-                                <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-4 py-1.5 rounded-full border border-emerald-200 flex items-center gap-1">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                    Verified Owner
+                                <img id="profile-large-avatar" src="https://ui-avatars.com/api/?name=Admin&background=111&color=00f2fe&size=128" alt="Profile" class="w-32 h-32 rounded-2xl border-4 border-base shadow-[0_0_20px_rgba(0,0,0,0.8)] object-cover bg-base">
+                                <span class="bg-neon-green/10 text-neon-green text-xs font-mono font-bold px-4 py-1.5 rounded border border-neon-green/30 shadow-[0_0_10px_rgba(0,255,136,0.2)]">
+                                    AUTHORIZED ROOT
                                 </span>
                             </div>
                             
-                            <h2 id="profile-name" class="text-4xl font-heading font-extrabold text-gray-900 tracking-tight">Ravi Vishwakarma</h2>
-                            <p class="text-brand-600 font-bold text-sm mt-1 uppercase tracking-wider">Super Administrator</p>
+                            <h2 id="profile-name" class="text-4xl font-heading font-black text-white tracking-tight">System Admin</h2>
+                            <p class="text-neon-cyan font-mono text-sm mt-1 uppercase tracking-widest">ID: EVOLVE-PRIME</p>
                             
                             <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="p-5 bg-gray-50 rounded-xl border border-gray-100">
-                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Email Address</p>
-                                    <p id="profile-email" class="text-gray-900 font-bold text-lg">ravivish517@gmail.com</p>
+                                <div class="p-5 bg-surfaceAlt rounded-xl border border-white/5">
+                                    <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Authenticated Email</p>
+                                    <p id="profile-email" class="text-white font-medium text-lg">ravivish517@gmail.com</p>
                                 </div>
-                                <div class="p-5 bg-gray-50 rounded-xl border border-gray-100">
-                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Security Level</p>
-                                    <p class="text-gray-900 font-bold text-lg flex items-center gap-2">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <div class="p-5 bg-surfaceAlt rounded-xl border border-white/5">
+                                    <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Access Level</p>
+                                    <p class="text-white font-medium text-lg flex items-center gap-2">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b026ff" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                         Level 5 (Unrestricted)
                                     </p>
                                 </div>
-                                <div class="p-5 bg-gray-50 rounded-xl border border-gray-100">
-                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Connected Data Source</p>
-                                    <p class="text-gray-900 font-bold text-lg truncate" title="EvolveAI Production Sheet">EvolveAI Data Hub</p>
+                                <div class="p-5 bg-surfaceAlt rounded-xl border border-white/5">
+                                    <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Data Source Node</p>
+                                    <p class="text-white font-medium text-lg truncate text-gradient-cyan">Google Secure Sheets API</p>
                                 </div>
-                                <div class="p-5 bg-gray-50 rounded-xl border border-gray-100">
-                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Active Status</p>
+                                <div class="p-5 bg-surfaceAlt rounded-xl border border-white/5">
+                                    <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Current Status</p>
                                     <div class="flex items-center gap-2 mt-1">
-                                        <span class="relative flex h-3 w-3">
-                                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                                        </span>
-                                        <p class="text-gray-900 font-bold text-lg">Online & Syncing</p>
+                                        <div class="w-3 h-3 rounded-full bg-neon-green shadow-[0_0_10px_#00ff88]"></div>
+                                        <p class="text-white font-medium text-lg">Online & Monitoring</p>
                                     </div>
                                 </div>
                             </div>
@@ -404,9 +404,60 @@
         </main>
 
         <!-- NOTIFICATION CONTAINER (Fixed Top Right) -->
-        <div id="notification-container" class="fixed top-20 right-6 w-80 flex flex-col gap-3 z-50 pointer-events-none">
+        <div id="notification-container" class="fixed top-24 right-6 w-80 flex flex-col gap-3 z-50 pointer-events-none">
             <!-- Notifications injected here -->
         </div>
+        
+        <!-- LEAD DETAILS MODAL -->
+        <div id="lead-modal" class="fixed inset-0 z-[200] modal-overlay flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 px-4">
+            <div class="neon-card w-full max-w-2xl bg-surface border border-neon-cyan/30 shadow-[0_0_50px_rgba(0,242,254,0.15)] transform scale-95 transition-transform duration-300" id="modal-content">
+                <div class="p-6 border-b border-border flex justify-between items-center bg-surfaceAlt">
+                    <h3 class="text-xl font-heading font-bold text-white flex items-center gap-2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Lead Dossier
+                    </h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-lg transition-colors">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <div class="p-6 space-y-6">
+                    <div class="flex items-center gap-4 pb-6 border-b border-border">
+                        <div class="w-16 h-16 bg-gradient-to-br from-neon-purple to-neon-cyan rounded-full p-0.5">
+                            <div class="w-full h-full bg-surface rounded-full flex items-center justify-center text-xl font-bold text-white" id="modal-initials">--</div>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-white" id="modal-name">Client Name</h2>
+                            <p class="text-neon-cyan font-mono text-sm mt-1" id="modal-id">UID-XXXXX</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-base p-4 rounded-xl border border-white/5">
+                            <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-1">Email</p>
+                            <p class="text-white font-medium" id="modal-email">email@example.com</p>
+                        </div>
+                        <div class="bg-base p-4 rounded-xl border border-white/5">
+                            <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-1">Phone</p>
+                            <p class="text-white font-medium" id="modal-phone">+1234567890</p>
+                        </div>
+                        <div class="bg-base p-4 rounded-xl border border-white/5">
+                            <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-1">Intent Category</p>
+                            <span class="inline-block bg-white/10 text-white px-2 py-1 rounded text-sm font-medium border border-white/10" id="modal-subject">Subject</span>
+                        </div>
+                        <div class="bg-base p-4 rounded-xl border border-white/5">
+                            <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-1">Timestamp</p>
+                            <p class="text-white font-medium text-sm" id="modal-time">Date & Time</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-base p-4 rounded-xl border border-white/5">
+                        <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Message Payload</p>
+                        <p class="text-gray-300 leading-relaxed text-sm whitespace-pre-wrap" id="modal-message">User message goes here...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- JAVASCRIPT LOGIC -->
@@ -427,7 +478,6 @@
         let userData = null;
 
         /* --- GOOGLE OAUTH 2.0 IMPLEMENTATION --- */
-        // Utility to decode JWT token to get user info (Email, Name, Picture)
         function decodeJwtResponse(token) {
             let base64Url = token.split('.')[1];
             let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -437,42 +487,28 @@
             return JSON.parse(jsonPayload);
         }
 
-        // Callback function after Google Sign-In is successful
         function handleCredentialResponse(response) {
             const responsePayload = decodeJwtResponse(response.credential);
             
             if (responsePayload.email.toLowerCase() === ALLOWED_EMAIL.toLowerCase()) {
-                // Success: Authorized User
-                userData = {
-                    name: responsePayload.name,
-                    email: responsePayload.email,
-                    picture: responsePayload.picture
-                };
-                
-                // Save session securely
-                localStorage.setItem('evolve_modern_auth', JSON.stringify(userData));
-                
-                // Hide login, start app
+                userData = { name: responsePayload.name, email: responsePayload.email, picture: responsePayload.picture };
+                localStorage.setItem('evolve_neon_auth', JSON.stringify(userData));
                 initApp();
             } else {
-                // Failure: Unauthorized Email
                 const err = document.getElementById('login-error');
                 err.classList.remove('hidden');
                 setTimeout(() => err.classList.add('hidden'), 5000);
             }
         }
 
-        // Initialize Google Identity Services on window load
         window.onload = function () {
-            // Check if user is already logged in
-            const storedUser = localStorage.getItem('evolve_modern_auth');
+            const storedUser = localStorage.getItem('evolve_neon_auth');
             if (storedUser) {
                 userData = JSON.parse(storedUser);
                 initApp();
                 return;
             }
 
-            // Setup Google Auth Button
             google.accounts.id.initialize({
                 client_id: GOOGLE_CLIENT_ID,
                 callback: handleCredentialResponse,
@@ -482,126 +518,105 @@
             
             google.accounts.id.renderButton(
                 document.getElementById("google-buttonDiv"),
-                { 
-                    theme: "outline", 
-                    size: "large", 
-                    width: "100%",
-                    text: "continue_with",
-                    shape: "rectangular"
-                }
+                { theme: "filled_black", size: "large", width: "100%", text: "continue_with", shape: "rectangular" }
             );
         };
 
         function logout() {
-            localStorage.removeItem('evolve_modern_auth');
+            localStorage.removeItem('evolve_neon_auth');
             clearInterval(pollingInterval);
             document.getElementById('app-container').classList.add('hidden-view');
             document.getElementById('login-screen').classList.remove('hidden-view');
-            
-            // Optional: Revoke Google token
             google.accounts.id.disableAutoSelect();
         }
 
         /* --- APP INITIALIZATION --- */
         function initApp() {
-            // Hide Login, Show Main App
             document.getElementById('login-screen').classList.add('hidden-view');
             document.getElementById('app-container').classList.remove('hidden-view');
             
-            // Populate User Data in UI
             if(userData) {
                 if(userData.picture) {
-                    document.getElementById('user-avatar').src = userData.picture;
+                    document.getElementById('nav-user-avatar').src = userData.picture;
                     document.getElementById('profile-large-avatar').src = userData.picture;
                 }
-                document.getElementById('profile-name').innerText = userData.name || "Admin User";
+                const shortName = userData.name ? userData.name.split(' ')[0] : 'Admin';
+                document.getElementById('nav-user-name').innerText = shortName;
+                document.getElementById('profile-name').innerText = userData.name || "System Admin";
                 document.getElementById('profile-email').innerText = userData.email || ALLOWED_EMAIL;
             }
             
-            fetchDataInitial(); // First heavy load
-            
-            // SMART POLLING: Checks in background every 5 seconds.
+            fetchDataInitial(); 
             pollingInterval = setInterval(smartSilentFetch, 5000);
             
-            // Listeners for Table Controls
             document.getElementById('search-input').addEventListener('input', renderTable);
             document.getElementById('filter-subject').addEventListener('change', renderTable);
-            document.getElementById('sort-order').addEventListener('change', renderTable);
         }
 
         /* --- NAVBAR & TABS --- */
         function switchTab(tabId) {
-            // Hide all views
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden-view'));
             
-            // Reset nav links
-            document.querySelectorAll('.nav-link').forEach(el => {
-                el.classList.remove('active');
-            });
+            // Reset nav buttons
+            const btnDash = document.getElementById('tab-dashboard');
+            const btnProf = document.getElementById('tab-profile');
             
-            // Show selected view
+            btnDash.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-textMuted hover:text-white hover:bg-white/5";
+            btnProf.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-textMuted hover:text-white hover:bg-white/5";
+            
             document.getElementById(`view-${tabId}`).classList.remove('hidden-view');
             
-            // Activate clicked nav link
             const activeBtn = document.getElementById(`tab-${tabId}`);
-            if(activeBtn) activeBtn.classList.add('active');
+            if(activeBtn) {
+                activeBtn.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 bg-white/10 text-white shadow-sm border border-white/5";
+            }
 
-            // Scroll to top
             window.scrollTo(0,0);
         }
 
         /* --- DATA ENGINE (Smart Sync) --- */
         function processCSV(text) {
             const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
-            return parsed.data.filter(row => row['Full Name'] || row['Client ID']);
+            // Clean up rows and map them
+            return parsed.data.filter(row => row['Full Name'] || row['Client ID']).map((row, index) => {
+                row._index = index; // Unique internal ID for opening modal
+                return row;
+            });
         }
 
         async function fetchDataInitial() {
             try {
                 const response = await fetch(CSV_URL, { cache: "no-store" });
                 const text = await response.text();
-                const validData = processCSV(text);
-                
-                globalData = validData;
-                lastRowCount = validData.length;
+                globalData = processCSV(text);
+                lastRowCount = globalData.length;
                 
                 updateDashboardStats();
                 renderTable();
                 initCharts();
             } catch (err) {
-                console.error("Initial fetch failed:", err);
+                console.error("Fetch error:", err);
             }
         }
 
-        // The Smart Background Fetcher - Doesn't cause UI flickering
         async function smartSilentFetch() {
             try {
                 const response = await fetch(CSV_URL, { cache: "no-store" });
                 const text = await response.text();
                 const currentData = processCSV(text);
                 
-                // ONLY update if new rows are detected
                 if (currentData.length > lastRowCount) {
-                    const newRowsCount = currentData.length - lastRowCount;
-                    
-                    // Extract newly added rows
                     const newLeads = currentData.slice(lastRowCount);
-                    
                     globalData = currentData;
                     lastRowCount = currentData.length;
                     
-                    // Update UI silently & trigger notifications
                     updateDashboardStats();
                     updateChartsData();
-                    appendNewRowsToTable(newLeads); // Graceful DOM injection
+                    appendNewRowsToTable(newLeads); 
                     
-                    newLeads.forEach(lead => {
-                        showNotification(lead['Full Name'] || 'New Lead', lead['Subject'] || 'Inquiry');
-                    });
+                    newLeads.forEach(lead => showNotification(lead['Full Name'] || 'New Lead', lead['Subject'] || 'Inquiry'));
                 }
-            } catch (err) {
-                // Ignore silent network errors in background
-            }
+            } catch (err) {}
         }
 
         /* --- NOTIFICATIONS --- */
@@ -610,32 +625,25 @@
             const notifId = 'notif-' + Date.now();
             
             const html = `
-                <div id="${notifId}" class="pointer-events-auto notification-enter bg-white p-4 rounded-xl shadow-float border border-brand-100 flex justify-between items-start">
+                <div id="${notifId}" class="pointer-events-auto notification-enter bg-surfaceAlt p-4 rounded-xl border border-neon-cyan/40 shadow-[0_0_20px_rgba(0,242,254,0.2)] flex justify-between items-start">
                     <div class="flex gap-3">
-                        <div class="w-10 h-10 bg-brand-50 rounded-full flex items-center justify-center text-brand-600 shrink-0">
+                        <div class="w-10 h-10 bg-neon-cyan/10 rounded-full flex items-center justify-center text-neon-cyan shrink-0">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                         </div>
                         <div>
-                            <h4 class="font-extrabold text-sm text-gray-900">New Form Submission</h4>
-                            <p class="text-xs text-gray-500 mt-0.5"><strong class="text-gray-700">${name}</strong> via ${subject}</p>
+                            <h4 class="font-bold text-sm text-white font-heading tracking-wide">Signal Received</h4>
+                            <p class="text-xs text-gray-400 mt-1"><strong class="text-neon-cyan">${name}</strong> | ${subject}</p>
                         </div>
                     </div>
-                    <button onclick="document.getElementById('${notifId}').remove()" class="text-gray-400 hover:text-gray-600 p-1">
+                    <button onclick="document.getElementById('${notifId}').remove()" class="text-gray-500 hover:text-white p-1 transition-colors">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
             `;
             container.insertAdjacentHTML('afterbegin', html);
-            
-            // Auto dismiss after 6 seconds
             setTimeout(() => {
                 const el = document.getElementById(notifId);
-                if(el) {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateY(-10px)';
-                    el.style.transition = 'all 0.3s ease';
-                    setTimeout(() => el.remove(), 300);
-                }
+                if(el) { el.style.opacity = '0'; el.style.transition = 'all 0.3s ease'; setTimeout(() => el.remove(), 300); }
             }, 6000);
         }
 
@@ -650,39 +658,53 @@
             const subjects = new Set(globalData.map(d => d['Subject']).filter(Boolean));
             document.getElementById('stat-subjects').innerText = subjects.size;
 
-            // Update Select Dropdown options safely
             const filterSelect = document.getElementById('filter-subject');
             const currentFilter = filterSelect.value;
-            filterSelect.innerHTML = '<option value="All">All Subjects</option>';
+            filterSelect.innerHTML = '<option value="All">All Intents</option>';
             subjects.forEach(sub => {
                 filterSelect.innerHTML += `<option value="${sub}">${sub}</option>`;
             });
             filterSelect.value = subjects.has(currentFilter) ? currentFilter : 'All';
         }
 
-        /* --- GRACEFUL TABLE RENDERING --- */
-        function createRowHTML(row, isNew = false) {
+        /* --- ENHANCED TABLE RENDERING --- */
+        function isToday(dateString) {
+            const today = new Date().toLocaleDateString('en-GB');
+            return dateString === today;
+        }
+
+        function createRowHTML(row, isNewHighlight = false) {
+            const isFresh = isToday(row['Submission Date']);
+            const statusBadge = isFresh 
+                ? `<span class="status-new text-[10px] font-mono px-2 py-0.5 rounded uppercase tracking-widest font-bold">New</span>` 
+                : `<span class="bg-white/5 text-gray-400 border border-white/10 text-[10px] font-mono px-2 py-0.5 rounded uppercase tracking-widest">Reviewed</span>`;
+
             return `
-                <tr class="hover:bg-gray-50 transition-colors ${isNew ? 'new-row' : ''}">
-                    <td class="px-6 py-4 align-top border-t border-gray-100">
-                        <p class="font-bold text-gray-900">${row['Full Name'] || 'N/A'}</p>
-                        <p class="text-xs text-brand-600 font-mono font-bold mt-1 bg-brand-50 inline-block px-1.5 py-0.5 rounded">${row['Client ID'] || 'N/A'}</p>
+                <tr class="table-row group ${isNewHighlight ? 'new-row' : ''}">
+                    <td class="px-6 py-4 align-middle">
+                        <p class="font-bold text-white group-hover:text-neon-cyan transition-colors">${row['Full Name'] || 'N/A'}</p>
+                        <p class="text-xs text-gray-500 font-mono mt-1">${row['Client ID'] || 'N/A'}</p>
                     </td>
-                    <td class="px-6 py-4 align-top border-t border-gray-100">
-                        <p class="text-sm font-semibold text-gray-700">${row['Work Email'] || 'N/A'}</p>
-                        <p class="text-xs text-gray-500 font-medium mt-1">${row['Mobile Number'] || 'N/A'}</p>
+                    <td class="px-6 py-4 align-middle">
+                        <p class="text-sm font-medium text-gray-300">${row['Work Email'] || 'N/A'}</p>
+                        <p class="text-xs text-gray-500 font-mono mt-1">${row['Mobile Number'] || 'N/A'}</p>
                     </td>
-                    <td class="px-6 py-4 align-top border-t border-gray-100 max-w-sm">
-                        <span class="inline-block px-2.5 py-1 bg-gray-100 border border-gray-200 rounded-md text-xs font-bold text-gray-600 mb-2">
+                    <td class="px-6 py-4 align-middle max-w-[200px]">
+                        <span class="inline-block px-2.5 py-1 bg-surface border border-border rounded text-xs font-semibold text-gray-300 mb-1 truncate max-w-full">
                             ${row['Subject'] || 'General'}
                         </span>
-                        <p class="text-sm text-gray-600 truncate hover:whitespace-normal hover:overflow-visible transition-all cursor-default" title="${row['Message']}">
-                            ${row['Message'] || ''}
-                        </p>
                     </td>
-                    <td class="px-6 py-4 align-top border-t border-gray-100">
-                        <p class="text-sm font-semibold text-gray-800">${row['Submission Date'] || ''}</p>
-                        <p class="text-xs text-gray-500 font-medium mt-1">${row['Submission Time'] || ''}</p>
+                    <td class="px-6 py-4 align-middle">
+                        <div class="flex flex-col items-start gap-1">
+                            ${statusBadge}
+                            <p class="text-xs text-gray-500 font-mono mt-1">${row['Submission Date']} ${row['Submission Time'] ? '• '+row['Submission Time'] : ''}</p>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 align-middle text-right">
+                        <button onclick="openModal(${row._index})" class="bg-white/5 hover:bg-neon-cyan/20 border border-white/10 hover:border-neon-cyan/50 text-gray-300 hover:text-neon-cyan px-3 py-1.5 rounded text-xs font-bold transition-all inline-flex items-center gap-2">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            View
+                        </button>
                     </td>
                 </tr>
             `;
@@ -692,22 +714,22 @@
             const tbody = document.getElementById('table-body');
             const search = document.getElementById('search-input').value.toLowerCase();
             const filter = document.getElementById('filter-subject').value;
-            const sort = document.getElementById('sort-order').value;
 
             let filtered = globalData.filter(row => {
-                const mSearch = (row['Full Name']||'').toLowerCase().includes(search) || (row['Work Email']||'').toLowerCase().includes(search);
+                const mSearch = (row['Full Name']||'').toLowerCase().includes(search) || (row['Client ID']||'').toLowerCase().includes(search) || (row['Work Email']||'').toLowerCase().includes(search);
                 const mFilter = filter === 'All' || row['Subject'] === filter;
                 return mSearch && mFilter;
             });
 
+            // Always sort Newest First for the admin view
             filtered.sort((a, b) => {
                 const dA = a['Submission Date'] ? a['Submission Date'].split('/').reverse().join('') : '';
                 const dB = b['Submission Date'] ? b['Submission Date'].split('/').reverse().join('') : '';
-                return sort === 'newest' ? dB.localeCompare(dA) : dA.localeCompare(dB);
+                return dB.localeCompare(dA);
             });
 
             if(filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-12 text-gray-400 font-bold">No leads match your criteria.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-12"><div class="text-gray-500 font-mono text-sm uppercase tracking-widest">No matching records found</div></td></tr>`;
                 return;
             }
 
@@ -716,28 +738,73 @@
 
         function appendNewRowsToTable(newRows) {
             const tbody = document.getElementById('table-body');
-            const sort = document.getElementById('sort-order').value;
             const search = document.getElementById('search-input').value;
             const filter = document.getElementById('filter-subject').value;
             
-            // Only inject if no search/filter is active
             if (search.trim() !== '' || filter !== 'All') {
-                renderTable(); 
-                return;
+                renderTable(); return;
             }
 
             let htmlString = newRows.map(row => createRowHTML(row, true)).join('');
-            
-            if (sort === 'newest') {
-                tbody.insertAdjacentHTML('afterbegin', htmlString);
-            } else {
-                tbody.insertAdjacentHTML('beforeend', htmlString);
-            }
+            tbody.insertAdjacentHTML('afterbegin', htmlString);
         }
 
-        /* --- CHARTS (Modern SaaS Theme) --- */
-        const chartColors = ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#f43f5e', '#8b5cf6'];
-        
+        /* --- MODAL LOGIC --- */
+        function openModal(index) {
+            const row = globalData.find(r => r._index === index);
+            if(!row) return;
+            
+            // Set Initials
+            const name = row['Full Name'] || 'U';
+            document.getElementById('modal-initials').innerText = name.substring(0, 2).toUpperCase();
+            
+            // Populate Data
+            document.getElementById('modal-name').innerText = name;
+            document.getElementById('modal-id').innerText = row['Client ID'] || 'N/A';
+            document.getElementById('modal-email').innerText = row['Work Email'] || 'N/A';
+            document.getElementById('modal-phone').innerText = row['Mobile Number'] || 'N/A';
+            document.getElementById('modal-subject').innerText = row['Subject'] || 'General';
+            document.getElementById('modal-time').innerText = `${row['Submission Date'] || ''} - ${row['Submission Time'] || ''}`;
+            document.getElementById('modal-message').innerText = row['Message'] || 'No message provided.';
+            
+            // Open animation
+            const modal = document.getElementById('lead-modal');
+            const content = document.getElementById('modal-content');
+            modal.classList.remove('pointer-events-none');
+            modal.classList.add('opacity-100');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('lead-modal');
+            const content = document.getElementById('modal-content');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('pointer-events-none');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+        }
+
+        /* --- EXPORT CSV --- */
+        function exportCSV() {
+            if(globalData.length === 0) return alert("No data to export");
+            
+            // Remove the internal _index before exporting
+            const exportData = globalData.map(({ _index, ...rest }) => rest);
+            const csv = Papa.unparse(exportData);
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `EvolveAI_Leads_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        /* --- CHARTS (Neon Theme) --- */
         function getChartData() {
             const dateCounts = {}, subCounts = {};
             globalData.forEach(d => {
@@ -748,45 +815,43 @@
             });
             const dates = Object.keys(dateCounts).slice(-7);
             return {
-                dates: dates,
-                counts: dates.map(date => dateCounts[date]),
-                subLabels: Object.keys(subCounts),
-                subValues: Object.values(subCounts)
+                dates: dates, counts: dates.map(date => dateCounts[date]),
+                subLabels: Object.keys(subCounts), subValues: Object.values(subCounts)
             };
         }
 
         function initCharts() {
             Chart.defaults.font.family = 'Inter';
-            Chart.defaults.color = '#64748b';
-            Chart.defaults.font.weight = '600';
+            Chart.defaults.color = '#94a3b8';
             
             const data = getChartData();
             
             const barCtx = document.getElementById('barChart').getContext('2d');
             const gradient = barCtx.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, '#6366f1'); 
-            gradient.addColorStop(1, '#a5b4fc'); 
+            gradient.addColorStop(0, '#00f2fe'); 
+            gradient.addColorStop(1, 'rgba(0, 242, 254, 0.1)'); 
 
             barChartInstance = new Chart(barCtx, {
                 type: 'bar',
                 data: {
                     labels: data.dates,
                     datasets: [{
-                        label: 'Submissions',
+                        label: 'Leads',
                         data: data.counts,
                         backgroundColor: gradient,
-                        borderRadius: 6,
-                        borderSkipped: false,
+                        borderColor: '#00f2fe',
+                        borderWidth: 1,
+                        borderRadius: 4,
                         barThickness: 'flex',
-                        maxBarThickness: 40
+                        maxBarThickness: 30
                     }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#111', titleColor: '#fff', bodyColor: '#00f2fe', borderColor: '#333', borderWidth: 1 } },
                     scales: {
-                        y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#f1f5f9', drawBorder: false } },
-                        x: { grid: { display: false, drawBorder: false } }
+                        y: { beginAtZero: true, ticks: { stepSize: 1, color: '#666' }, grid: { color: '#1a1a1a' } },
+                        x: { grid: { display: false }, ticks: { color: '#888' } }
                     }
                 }
             });
@@ -798,15 +863,18 @@
                     labels: data.subLabels,
                     datasets: [{
                         data: data.subValues,
-                        backgroundColor: chartColors,
-                        borderWidth: 2, borderColor: '#ffffff',
-                        hoverOffset: 6
+                        backgroundColor: ['#00f2fe', '#b026ff', '#00ff88', '#ff6b6b', '#f59e0b', '#8b5cf6'],
+                        borderWidth: 0,
+                        hoverOffset: 8
                     }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    cutout: '70%',
-                    plugins: { legend: { position: 'right', labels: { usePointStyle: true, padding: 20, font: {weight: '600'} } } }
+                    cutout: '75%',
+                    plugins: { 
+                        legend: { position: 'right', labels: { usePointStyle: true, color: '#aaa', padding: 15 } },
+                        tooltip: { backgroundColor: '#111', borderColor: '#333', borderWidth: 1 }
+                    }
                 }
             });
         }
@@ -814,7 +882,6 @@
         function updateChartsData() {
             if(!barChartInstance || !pieChartInstance) return;
             const data = getChartData();
-            
             barChartInstance.data.labels = data.dates;
             barChartInstance.data.datasets[0].data = data.counts;
             barChartInstance.update();
