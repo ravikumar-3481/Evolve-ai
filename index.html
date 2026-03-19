@@ -40,6 +40,8 @@
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         /* Typography & Utilities */
@@ -258,7 +260,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/></svg>');
             background-size: 40px 40px;
             z-index: 0;
             pointer-events: none;
@@ -287,6 +289,7 @@
             text-transform: uppercase;
             font-weight: 600;
             animation: subtlePulse 3s infinite ease-in-out;
+            
         }
 
         .hero h1 {
@@ -665,6 +668,8 @@
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            min-height: 400px;
         }
 
         .form-row {
@@ -715,8 +720,36 @@
         }
         
         select.form-control option {
-            background: var(--bg-darker);
+            background-color: #1a1d24; /* Sleek dark background for dropdown depth */
             color: var(--text-main);
+            padding: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        select.form-control option:checked {
+            background-color: var(--accent-blue);
+            color: var(--bg-dark);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Success Screen CSS */
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+            animation: messageAppear 0.5s ease-out forwards;
+        }
+
+        .success-icon {
+            font-size: 4.5rem;
+            color: var(--success);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 230, 118, 0.3);
         }
 
         footer {
@@ -758,14 +791,14 @@
             <a href="#" class="logo">Evolve<span class="text-gradient">AI</span></a>
             <ul class="nav-links">
                 <li><a href="#framework">Methodology</a></li>
-                <li><a href="#services">Capabilities</a></li>
+                <li><a href="#services">Services</a></li>
                 <li><a href="#showcase">AI Demo</a></li>
             </ul>
             <a href="#audit" class="btn btn-cta" style="padding: 10px 24px; font-size: 0.9rem;">Get Free Audit</a>
         </div>
     </nav>
 
-    <!-- Hero Section (With SVG Grid Pattern) -->
+    <!-- Hero Section -->
     <section id="home" class="hero reveal reveal-scale">
         <div class="container hero-content">
             <div class="hero-badge">Next-Gen Digital Agency</div>
@@ -864,12 +897,12 @@
         </div>
     </section>
 
-    <!-- Services Section (CSS-Driven Sticky Card Stack) -->
+    <!-- Services Section (Deliverables) -->
     <section id="services" class="section-padding services-section">
         <div class="container">
             <div class="section-header text-center reveal">
-                <h2>Our Core <span class="text-gradient">Capabilities</span></h2>
-                <p>We provide enterprise-grade digital infrastructure designed entirely around one metric: Business Growth.</p>
+                <h2>Our Deliverable <span class="text-gradient">Services</span></h2>
+                <p>We provide enterprise-grade digital deliverables designed entirely around one metric: Business Growth.</p>
             </div>
 
             <div class="services-grid">
@@ -877,12 +910,12 @@
                 <div class="service-card reveal delay-1">
                     <div class="service-content">
                         <div class="service-icon">✦</div>
-                        <h3>CRO Web Design</h3>
+                        <h3>High-Converting Web & Landing Pages</h3>
                         <p>Psychologically optimized, lightning-fast web experiences built strictly to convert visitors into buyers.</p>
                         <ul class="service-features">
-                            <li>Sub-second loading speeds</li>
-                            <li>A/B Tested User Interfaces</li>
-                            <li>Mobile-First Architecture</li>
+                            <li>Fully developed, ready-to-launch funnels</li>
+                            <li>Sub-second loading architecture</li>
+                            <li>A/B Tested User Interfaces delivered</li>
                         </ul>
                     </div>
                 </div>
@@ -891,12 +924,12 @@
                 <div class="service-card reveal delay-2">
                     <div class="service-content">
                         <div class="service-icon">⟡</div>
-                        <h3>AI Sales Agents</h3>
-                        <p>Custom-trained AI chatbots that engage traffic, answer complex objections, and book meetings 24/7/365.</p>
+                        <h3>Custom AI Sales Agents</h3>
+                        <p>Fully trained AI chatbots installed on your site to engage traffic, answer complex objections, and book meetings 24/7/365.</p>
                         <ul class="service-features">
-                            <li>Trained on your business data</li>
-                            <li>Calendar booking integration</li>
-                            <li>Multi-language support</li>
+                            <li>Agent trained on your specific business data</li>
+                            <li>Direct calendar booking integrations</li>
+                            <li>Multi-language conversational support</li>
                         </ul>
                     </div>
                 </div>
@@ -905,12 +938,12 @@
                 <div class="service-card reveal delay-3">
                     <div class="service-content">
                         <div class="service-icon">⚡</div>
-                        <h3>Workflow Automation</h3>
-                        <p>We connect your CRM, emails, and tools to eliminate manual data entry and automate your follow-ups.</p>
+                        <h3>Automated CRM & Workflows</h3>
+                        <p>We deliver a fully connected tech stack, eliminating manual data entry and automating your follow-ups.</p>
                         <ul class="service-features">
-                            <li>Zapier / Make.com architectures</li>
-                            <li>Automated lead nurturing</li>
-                            <li>Abandoned cart recovery</li>
+                            <li>Complete Zapier / Make.com architectures</li>
+                            <li>Automated email & SMS lead nurturing sequences</li>
+                            <li>Abandoned cart recovery systems</li>
                         </ul>
                     </div>
                 </div>
@@ -919,12 +952,12 @@
                 <div class="service-card reveal delay-1">
                     <div class="service-content">
                         <div class="service-icon">📊</div>
-                        <h3>Growth Dashboards</h3>
-                        <p>Centralized analytics platforms giving you x-ray vision into your marketing spend and customer lifetime value.</p>
+                        <h3>Real-Time Analytics Dashboards</h3>
+                        <p>Centralized platforms built for you, giving you x-ray vision into your marketing spend and customer lifetime value.</p>
                         <ul class="service-features">
-                            <li>Real-time revenue tracking</li>
-                            <li>Custom Looker/Tableau setups</li>
-                            <li>Attribution modeling</li>
+                            <li>Custom Looker/Tableau dashboard deployment</li>
+                            <li>Live tracking of revenue and lead flow</li>
+                            <li>Full-funnel attribution modeling</li>
                         </ul>
                     </div>
                 </div>
@@ -933,12 +966,12 @@
                 <div class="service-card reveal delay-2">
                     <div class="service-content">
                         <div class="service-icon">🎯</div>
-                        <h3>Omni-Channel Acquisition</h3>
-                        <p>AI-assisted paid media campaigns (Meta, Google, TikTok) that feed high-intent traffic directly into your new funnel.</p>
+                        <h3>Omni-Channel Ad Campaigns</h3>
+                        <p>Ready-to-launch paid media campaigns (Meta, Google, TikTok) that feed high-intent traffic directly into your new funnel.</p>
                         <ul class="service-features">
-                            <li>Predictive audience targeting</li>
-                            <li>Dynamic ad creative generation</li>
-                            <li>Continuous budget optimization</li>
+                            <li>Predictive audience targeting setup</li>
+                            <li>Dynamic ad creative generation packages</li>
+                            <li>Continuous ad account management</li>
                         </ul>
                     </div>
                 </div>
@@ -947,12 +980,12 @@
                 <div class="service-card reveal delay-3">
                     <div class="service-content">
                         <div class="service-icon">🧠</div>
-                        <h3>AI SEO & Content</h3>
-                        <p>Dominate search engines with programmatic SEO and AI-driven content clusters that build long-term organic authority.</p>
+                        <h3>SEO-Optimized Content Hubs</h3>
+                        <p>We build programmatic SEO pipelines and AI-driven content clusters to dominate your niche's search engine results.</p>
                         <ul class="service-features">
-                            <li>Entity-based semantic SEO</li>
-                            <li>Automated content pipelines</li>
-                            <li>High-authority link acquisition</li>
+                            <li>Entity-based semantic SEO strategy</li>
+                            <li>Automated blog and content publication</li>
+                            <li>High-authority backlink acquisition</li>
                         </ul>
                     </div>
                 </div>
@@ -1038,64 +1071,61 @@
             </div>
 
             <div class="form-container reveal reveal-scale delay-2">
-                <form id="audit-form" onsubmit="event.preventDefault(); alert('Audit Request Received! Our lead strategist will review your data and contact you shortly.');">
-                    
-                    <div class="form-row">
+                
+                <!-- The Form -->
+                <div id="form-content">
+                    <form id="audit-form">
+                        
                         <div class="form-group">
                             <label class="form-label">Full Name *</label>
-                            <input type="text" class="form-control" placeholder="John Doe" required>
+                            <input type="text" class="form-control" placeholder="Your Name" required>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Mobile Number *</label>
-                            <input type="tel" class="form-control" placeholder="+1 (555) 000-0000" required>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Mobile Number *</label>
+                                <input type="tel" class="form-control" placeholder="+91 9876543210" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Work Email *</label>
+                                <input type="email" class="form-control" placeholder="example@domain.com" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Work Email *</label>
-                            <input type="email" class="form-control" placeholder="john@company.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Website URL *</label>
-                            <input type="url" class="form-control" placeholder="https://yourwebsite.com" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Business Name *</label>
-                        <input type="text" class="form-control" placeholder="Company Inc." required>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Business Type *</label>
+                            <label class="form-label">Subject *</label>
                             <select class="form-control" required>
-                                <option value="" disabled selected>Select Industry</option>
-                                <option value="ecommerce">E-Commerce</option>
-                                <option value="b2b">B2B Service / Agency</option>
-                                <option value="saas">SaaS / Tech</option>
-                                <option value="local">Local / Retail</option>
-                                <option value="other">Other</option>
+                                <option value="" disabled selected>Select a subject</option>
+                                <option value="audit">Free Strategy Audit</option>
+                                <option value="web">Web & Landing Pages</option>
+                                <option value="ai">AI Sales Agents</option>
+                                <option value="automation">CRM & Automation</option>
+                                <option value="other">Other Inquiry</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Monthly Revenue *</label>
-                            <select class="form-control" required>
-                                <option value="" disabled selected>Select Range</option>
-                                <option value="<10k">Under $10k</option>
-                                <option value="10k-50k">$10k - $50k</option>
-                                <option value="50k-100k">$50k - $100k</option>
-                                <option value="100k+">$100k+</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <div class="form-group" style="margin-top: 30px;">
-                        <button type="submit" class="btn btn-cta" style="width: 100%; padding: 18px;">Claim My Free Audit (Value $499)</button>
-                    </div>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 16px; text-align: center;">🔒 100% Secure. We never share your data.</p>
-                </form>
+                        <div class="form-group">
+                            <label class="form-label">Message *</label>
+                            <textarea class="form-control" placeholder="Tell us about your business goals and current bottlenecks..." required></textarea>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 30px;">
+                            <button type="submit" class="btn btn-cta" style="width: 100%; padding: 18px;">Claim My Free Audit</button>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 16px; text-align: center;">🔒 100% Secure. We never share your data.</p>
+                    </form>
+                </div>
+
+                <!-- Custom Success Screen (Hidden initially) -->
+                <div id="success-screen" class="success-screen">
+                    <div class="success-icon">✓</div>
+                    <h3 style="font-size: 2rem; margin-bottom: 15px;">Audit Request Confirmed!</h3>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px;">
+                        Thank you for reaching out. Our lead strategist has received your details and will contact you shortly to schedule your free strategy audit.
+                    </p>
+                    <button class="btn btn-outline" onclick="resetForm()">Return</button>
+                </div>
+
             </div>
         </div>
     </section>
@@ -1228,7 +1258,7 @@
             
             simObserver.observe(document.getElementById('showcase'));
 
-            // 4. Animated Number Counters (Bidirectional on scroll)
+            // 4. Animated Number Counters
             const counters = document.querySelectorAll('.counter');
             
             const counterObserver = new IntersectionObserver((entries) => {
@@ -1247,7 +1277,6 @@
                         const step = (timestamp) => {
                             if (!startTimestamp) startTimestamp = timestamp;
                             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                            
                             const easeProgress = 1 - Math.pow(1 - progress, 4); 
                             
                             counter.innerText = Math.floor(easeProgress * target);
@@ -1289,6 +1318,25 @@
                     btn.style.transform = ``; 
                 });
             });
+
+            // 6. Form Submission Logic (Custom Success Screen)
+            const form = document.getElementById('audit-form');
+            const formContent = document.getElementById('form-content');
+            const successScreen = document.getElementById('success-screen');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Hide the form and display the success screen
+                formContent.style.display = 'none';
+                successScreen.style.display = 'block';
+            });
+
+            // Global function to reset the form
+            window.resetForm = function() {
+                form.reset();
+                successScreen.style.display = 'none';
+                formContent.style.display = 'block';
+            };
 
         });
     </script>
