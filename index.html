@@ -258,7 +258,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/></svg>');
             background-size: 40px 40px;
             z-index: 0;
             pointer-events: none;
@@ -341,7 +341,7 @@
 
         .matrix-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(280px, 285px);
             gap: 40px;
         }
 
