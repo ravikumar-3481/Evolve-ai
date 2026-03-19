@@ -258,7 +258,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></svg>');
             background-size: 40px 40px;
             z-index: 0;
             pointer-events: none;
@@ -341,7 +341,7 @@
 
         .matrix-grid {
             display: grid;
-            grid-template-columns: minmax(280px, 285px);
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
             gap: 40px;
         }
 
@@ -378,7 +378,7 @@
         /* The Framework (How We Contribute) */
         .framework-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
             gap: 20px;
             position: relative;
         }
@@ -450,13 +450,13 @@
             box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.6);
         }
 
-        /* Sticky Offsets to Create the Stack */
-        .service-card:nth-child(1) { top: 120px; z-index: 10; }
-        .service-card:nth-child(2) { top: 140px; z-index: 11; }
-        .service-card:nth-child(3) { top: 160px; z-index: 12; }
-        .service-card:nth-child(4) { top: 180px; z-index: 13; }
-        .service-card:nth-child(5) { top: 200px; z-index: 14; }
-        .service-card:nth-child(6) { top: 220px; z-index: 15; }
+        /* Sticky Offsets to Create the Stack Centered in Viewport on All Devices */
+        .service-card:nth-child(1) { top: max(80px, 20vh); z-index: 10; }
+        .service-card:nth-child(2) { top: calc(max(80px, 20vh) + 20px); z-index: 11; }
+        .service-card:nth-child(3) { top: calc(max(80px, 20vh) + 40px); z-index: 12; }
+        .service-card:nth-child(4) { top: calc(max(80px, 20vh) + 60px); z-index: 13; }
+        .service-card:nth-child(5) { top: calc(max(80px, 20vh) + 80px); z-index: 14; }
+        .service-card:nth-child(6) { top: calc(max(80px, 20vh) + 100px); z-index: 15; }
 
         .service-card::before {
             content: '';
@@ -512,7 +512,7 @@
         /* Trust / Proof Section */
         .proof-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
             gap: 30px;
         }
 
@@ -542,7 +542,7 @@
         /* Interactive AI Showcase */
         .showcase-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
             gap: 60px;
             align-items: center;
         }
@@ -669,7 +669,7 @@
 
         .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
             gap: 20px;
         }
 
@@ -731,8 +731,6 @@
         /* Responsive Design */
         @media (max-width: 992px) {
             .hero h1 { font-size: 3.5rem; }
-            .matrix-grid, .showcase-grid { grid-template-columns: 1fr; }
-            .proof-grid { grid-template-columns: 1fr; }
             .chat-ui-container { margin-top: 40px; }
         }
 
@@ -742,9 +740,7 @@
             .hero p { font-size: 1.1rem; }
             .section-padding { padding: 80px 0; }
             .form-container { padding: 30px 20px; }
-            .form-row { grid-template-columns: 1fr; }
             .section-header h2 { font-size: 2.2rem; }
-            .service-card { position: relative; top: 0 !important; } /* Disable sticky on mobile for flow */
         }
     </style>
 </head>
@@ -1298,5 +1294,6 @@
     </script>
 </body>
 </html>
+
 
 
