@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EvolveAI | Modern Admin Workspace</title>
+    <title>EvolveAI | Modern Workspace</title>
     
     <!-- Modern Enterprise Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,10 @@
     <!-- Chart.js for Graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Tailwind Config for Modern Light Theme -->
+    <!-- Google Identity Services (OAuth) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Tailwind Config for Ultra-Modern Light Theme -->
     <script>
         tailwind.config = {
             theme: {
@@ -32,6 +35,7 @@
                         brand: {
                             50: '#eef2ff',
                             100: '#e0e7ff',
+                            400: '#818cf8',
                             500: '#6366f1',
                             600: '#4f46e5',
                             900: '#312e81',
@@ -42,8 +46,9 @@
                         textMuted: '#64748b',
                     },
                     boxShadow: {
-                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-                        'float': '0 10px 40px -10px rgba(0, 0, 0, 0.08)',
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.03)',
+                        'float': '0 12px 30px -8px rgba(99, 102, 241, 0.15)',
+                        'inner-soft': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)',
                     }
                 }
             }
@@ -56,6 +61,7 @@
             color: #0f172a;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
         
         /* Elegant Scrollbar */
@@ -64,184 +70,222 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
         .card {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
+            border: 1px solid #f1f5f9;
+            border-radius: 20px;
             box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         .card:hover {
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
             transform: translateY(-2px);
+            border-color: #e2e8f0;
         }
 
         /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        .animate-fade-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
-        @keyframes slideIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideIn { 
+            from { opacity: 0; transform: translateX(100%) scale(0.95); } 
+            to { opacity: 1; transform: translateX(0) scale(1); } 
+        }
         .notification-enter { animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
         .hidden-view { display: none !important; }
         
-        /* Highlight new rows */
+        /* Highlight new rows gracefully */
         @keyframes highlightRow {
             0% { background-color: #eef2ff; }
             100% { background-color: transparent; }
         }
-        .new-row { animation: highlightRow 3s ease-out forwards; border-left: 3px solid #6366f1; }
+        .new-row { 
+            animation: highlightRow 3s ease-out forwards; 
+            border-left: 3px solid #6366f1; 
+        }
 
-        /* Mobile Sidebar Overlay */
-        #sidebar-overlay {
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(4px);
+        /* Nav Link Hover Effects */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #6366f1;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: #4f46e5;
+            font-weight: 600;
         }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden selection:bg-brand-500 selection:text-white">
+<body class="flex flex-col h-screen overflow-hidden selection:bg-brand-500 selection:text-white relative">
 
-    <!-- GOOGLE OAUTH LOGIN SCREEN (Simulated Secure Flow) -->
-    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-background">
-        <!-- Decorative Background Elements -->
-        <div class="absolute top-0 left-0 w-full h-96 bg-brand-600 rounded-b-[40%] shadow-2xl transform -translate-y-20 z-0"></div>
+    <!-- GOOGLE OAUTH LOGIN SCREEN -->
+    <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-background">
+        <!-- Abstract Background -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        </div>
         
-        <div class="card p-10 max-w-md w-full text-center z-10 animate-fade-in relative mx-4">
-            <div class="w-16 h-16 bg-brand-50 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <div class="card p-10 max-w-md w-full text-center z-10 animate-fade-up relative mx-4 border border-white bg-white/60 backdrop-blur-xl">
+            <div class="w-20 h-20 bg-gradient-to-br from-brand-500 to-brand-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-float transform rotate-3">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="-rotate-3"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
-            <h2 class="text-3xl font-heading font-extrabold text-textMain mb-2">Evolve Workspace</h2>
-            <p class="text-textMuted mb-8 text-sm">Sign in to access your agency dashboard</p>
+            <h2 class="text-3xl font-heading font-extrabold text-textMain mb-2 tracking-tight">Evolve Workspace</h2>
+            <p class="text-textMuted mb-8 text-sm font-medium">Enterprise Admin Authentication</p>
             
-            <button id="google-login-btn" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 font-medium py-3 px-6 rounded-xl hover:bg-gray-50 hover:shadow-md transition-all">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                Continue with Google
-            </button>
+            <!-- Google Sign-In Button Container -->
+            <div class="flex justify-center w-full mb-4 min-h-[44px]">
+                <div id="google-buttonDiv"></div>
+            </div>
             
-            <p id="login-error" class="text-red-500 text-sm mt-4 hidden font-medium bg-red-50 p-3 rounded-lg border border-red-100">Access Denied: Unrecognized account.</p>
+            <p id="login-error" class="text-red-600 text-sm mt-4 hidden font-medium bg-red-50 p-3 rounded-xl border border-red-100 flex items-center justify-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Access Denied: Unrecognized account.
+            </p>
             
-            <div class="mt-8 pt-6 border-t border-gray-100">
-                <p class="text-xs text-gray-400">Protected by EvolveAI Secure Infrastructure</p>
+            <div class="mt-8 pt-6 border-t border-gray-200/60">
+                <p class="text-xs text-gray-400 font-medium">Protected by EvolveAI Secure OAuth 2.0</p>
             </div>
         </div>
     </div>
 
     <!-- MAIN APP STRUCTURE -->
-    <div id="app-container" class="flex w-full h-full hidden-view bg-background">
+    <div id="app-container" class="flex flex-col w-full h-full hidden-view bg-background">
         
-        <!-- MOBILE SIDEBAR OVERLAY -->
-        <div id="sidebar-overlay" class="fixed inset-0 z-20 hidden md:hidden" onclick="toggleSidebar()"></div>
-
-        <!-- SIDEBAR -->
-        <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-72 bg-surface border-r border-gray-200 flex flex-col z-30 transform -translate-x-full md:translate-x-0 transition-transform duration-300 shadow-xl md:shadow-none">
-            <div class="p-6 flex items-center justify-between">
+        <!-- MODERN TOP NAVBAR -->
+        <header class="glass-nav sticky top-0 z-50 w-full px-4 sm:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <!-- Logo -->
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30">
+                    <div class="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-md">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                     </div>
-                    <h2 class="text-xl font-heading font-extrabold tracking-tight text-textMain">Evolve<span class="text-brand-600">AI</span></h2>
+                    <h2 class="text-xl font-heading font-extrabold tracking-tight text-textMain hidden sm:block">Evolve<span class="text-brand-600">AI</span></h2>
                 </div>
-                <button class="md:hidden text-gray-500" onclick="toggleSidebar()">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
-            </div>
-            
-            <div class="px-6 mb-6">
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Menu</p>
-            </div>
 
-            <nav class="flex-1 px-4 flex flex-col gap-2">
-                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl transition-all bg-brand-50 text-brand-600 font-semibold">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                    Overview
-                </button>
-                <button onclick="switchTab('submissions')" id="tab-submissions" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900 font-medium">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    Submissions
-                </button>
-                <button onclick="switchTab('profile')" id="tab-profile" class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900 font-medium">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    Admin Profile
-                </button>
-            </nav>
-            
-            <div class="p-4 m-4 bg-gray-50 rounded-2xl border border-gray-100">
-                <div class="flex items-center gap-3 mb-3">
-                    <img src="https://ui-avatars.com/api/?name=Ravi+Vishwakarma&background=4f46e5&color=fff" class="w-10 h-10 rounded-full shadow-sm" alt="Admin">
-                    <div>
-                        <p class="text-sm font-bold text-gray-900">Ravi V.</p>
-                        <p class="text-xs text-brand-600 font-medium">Super Admin</p>
-                    </div>
-                </div>
-                <button onclick="logout()" class="w-full py-2 bg-white border border-gray-200 text-sm font-medium text-gray-600 rounded-lg hover:text-red-600 hover:border-red-200 transition-colors">
-                    Sign Out
-                </button>
-            </div>
-        </aside>
-
-        <!-- MAIN CONTENT AREA -->
-        <main class="flex-1 overflow-y-auto w-full relative">
-            <!-- Header -->
-            <header class="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-gray-200 px-8 py-5 flex justify-between items-center">
-                <div class="flex items-center gap-4">
-                    <button class="md:hidden text-gray-600 p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="toggleSidebar()">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                <!-- Navigation Links -->
+                <nav class="hidden md:flex items-center gap-6">
+                    <button onclick="switchTab('dashboard')" id="tab-dashboard" class="nav-link active text-gray-500 hover:text-gray-900 font-semibold text-sm py-2 transition-colors flex items-center gap-2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                        Dashboard & Data
                     </button>
-                    <div>
-                        <h1 class="text-2xl font-heading font-bold text-textMain hidden sm:block">Welcome back, Ravi</h1>
-                    </div>
+                    <button onclick="switchTab('profile')" id="tab-profile" class="nav-link text-gray-500 hover:text-gray-900 font-semibold text-sm py-2 transition-colors flex items-center gap-2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        Admin Profile
+                    </button>
+                </nav>
+            </div>
+            
+            <div class="flex items-center gap-4 sm:gap-6">
+                <!-- Smart Sync Indicator -->
+                <div id="sync-status" class="hidden sm:flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-gray-200 shadow-sm" title="Auto-fetching data">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-xs font-bold text-gray-600 uppercase tracking-wide">Live</span>
                 </div>
-                
-                <div class="flex items-center gap-4">
-                    <!-- Smart Sync Indicator -->
-                    <div id="sync-status" class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-gray-200 shadow-sm">
-                        <span class="relative flex h-2.5 w-2.5">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                        </span>
-                        <span class="text-xs font-medium text-gray-600">Live Listening</span>
-                    </div>
-                </div>
-            </header>
 
-            <div class="p-4 md:p-8">
-                <!-- DASHBOARD VIEW -->
-                <div id="view-dashboard" class="view-section animate-fade-in space-y-6">
+                <!-- User Profile & Dropdown -->
+                <div class="relative group cursor-pointer flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-gray-900 leading-tight">Ravi V.</p>
+                        <p class="text-xs text-brand-600 font-semibold">Super Admin</p>
+                    </div>
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=Ravi+Vishwakarma&background=4f46e5&color=fff" class="w-10 h-10 rounded-full shadow-sm border-2 border-white" alt="Admin">
+                    
+                    <!-- Hover Dropdown Menu -->
+                    <div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right scale-95 group-hover:scale-100">
+                        <div class="p-2">
+                            <button onclick="switchTab('profile')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg font-medium flex items-center gap-2 md:hidden">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                Profile
+                            </button>
+                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN SCROLLABLE AREA -->
+        <main class="flex-1 overflow-y-auto w-full relative">
+            <div class="max-w-[1400px] mx-auto p-4 sm:p-6 lg:p-8">
+                
+                <!-- DASHBOARD VIEW (Unified: Stats + Charts + Table) -->
+                <div id="view-dashboard" class="view-section animate-fade-up space-y-8">
+                    
+                    <!-- Welcome Text -->
+                    <div>
+                        <h1 class="text-3xl font-heading font-extrabold text-textMain">Welcome back, Ravi</h1>
+                        <p class="text-textMuted mt-1 font-medium">Here's what's happening with your agency today.</p>
+                    </div>
+
                     <!-- Stat Cards -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="card p-6 border-l-4 border-l-brand-500">
-                            <div class="flex justify-between items-start">
+                        <div class="card p-6 border-l-4 border-l-brand-500 relative overflow-hidden group">
+                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-brand-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out opacity-50"></div>
+                            <div class="relative flex justify-between items-start">
                                 <div>
-                                    <p class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Total Leads</p>
-                                    <h3 id="stat-total" class="text-4xl font-heading font-extrabold text-gray-900 mt-2">0</h3>
+                                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider">Total Leads</p>
+                                    <h3 id="stat-total" class="text-4xl font-heading font-extrabold text-gray-900 mt-2 tracking-tight">0</h3>
                                 </div>
-                                <div class="p-3 bg-brand-50 text-brand-600 rounded-lg">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                <div class="p-3 bg-brand-50 text-brand-600 rounded-xl">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="card p-6 border-l-4 border-l-emerald-500">
-                            <div class="flex justify-between items-start">
+                        <div class="card p-6 border-l-4 border-l-emerald-500 relative overflow-hidden group">
+                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out opacity-50"></div>
+                            <div class="relative flex justify-between items-start">
                                 <div>
-                                    <p class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Leads Today</p>
-                                    <h3 id="stat-today" class="text-4xl font-heading font-extrabold text-gray-900 mt-2">0</h3>
+                                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider">Leads Today</p>
+                                    <h3 id="stat-today" class="text-4xl font-heading font-extrabold text-gray-900 mt-2 tracking-tight">0</h3>
                                 </div>
-                                <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="card p-6 border-l-4 border-l-amber-500">
-                            <div class="flex justify-between items-start">
+                        <div class="card p-6 border-l-4 border-l-amber-500 relative overflow-hidden group">
+                            <div class="absolute -right-6 -top-6 w-24 h-24 bg-amber-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out opacity-50"></div>
+                            <div class="relative flex justify-between items-start">
                                 <div>
-                                    <p class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Inquiry Types</p>
-                                    <h3 id="stat-subjects" class="text-4xl font-heading font-extrabold text-gray-900 mt-2">0</h3>
+                                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider">Inquiry Types</p>
+                                    <h3 id="stat-subjects" class="text-4xl font-heading font-extrabold text-gray-900 mt-2 tracking-tight">0</h3>
                                 </div>
-                                <div class="p-3 bg-amber-50 text-amber-600 rounded-lg">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                                <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                                 </div>
                             </div>
                         </div>
@@ -249,38 +293,37 @@
 
                     <!-- Charts -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="card p-6">
-                            <h3 class="text-lg font-heading font-bold text-gray-900 mb-6">Growth Timeline</h3>
-                            <div class="h-64 relative w-full">
+                        <div class="card p-6 flex flex-col">
+                            <h3 class="text-lg font-heading font-extrabold text-gray-900 mb-6">Growth Timeline</h3>
+                            <div class="flex-1 min-h-[250px] relative w-full">
                                 <canvas id="barChart"></canvas>
                             </div>
                         </div>
-                        <div class="card p-6">
-                            <h3 class="text-lg font-heading font-bold text-gray-900 mb-6">Lead Distribution</h3>
-                            <div class="h-64 relative w-full flex justify-center">
+                        <div class="card p-6 flex flex-col">
+                            <h3 class="text-lg font-heading font-extrabold text-gray-900 mb-6">Lead Distribution</h3>
+                            <div class="flex-1 min-h-[250px] relative w-full flex justify-center">
                                 <canvas id="pieChart"></canvas>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- SUBMISSIONS VIEW -->
-                <div id="view-submissions" class="view-section hidden-view animate-fade-in flex flex-col h-[calc(100vh-140px)]">
-                    <div class="card flex flex-col h-full overflow-hidden">
-                        <!-- Toolbar -->
-                        <div class="p-5 border-b border-gray-100 bg-white flex flex-col sm:flex-row gap-4 justify-between items-center">
-                            <div class="relative w-full sm:max-w-xs">
-                                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                </div>
-                                <input type="text" id="search-input" placeholder="Search leads..." class="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all">
-                            </div>
+                    <!-- DATA TABLE (Unified into Dashboard) -->
+                    <div class="card flex flex-col overflow-hidden mt-8">
+                        <div class="p-6 border-b border-gray-100 bg-white flex flex-col sm:flex-row gap-4 justify-between items-center">
+                            <h3 class="text-lg font-heading font-extrabold text-gray-900">Recent Submissions</h3>
                             
-                            <div class="flex w-full sm:w-auto gap-3">
-                                <select id="filter-subject" class="bg-gray-50 border border-gray-200 text-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 flex-1 sm:flex-none cursor-pointer font-medium">
+                            <div class="flex w-full sm:w-auto flex-col sm:flex-row gap-3">
+                                <div class="relative w-full sm:w-64">
+                                    <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    </div>
+                                    <input type="text" id="search-input" placeholder="Search leads..." class="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-lg pl-10 pr-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all">
+                                </div>
+                                
+                                <select id="filter-subject" class="bg-gray-50 border border-gray-200 text-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 cursor-pointer font-semibold shadow-sm">
                                     <option value="All">All Subjects</option>
                                 </select>
-                                <select id="sort-order" class="bg-gray-50 border border-gray-200 text-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 cursor-pointer font-medium">
+                                <select id="sort-order" class="bg-gray-50 border border-gray-200 text-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500 cursor-pointer font-semibold shadow-sm">
                                     <option value="newest">Newest First</option>
                                     <option value="oldest">Oldest First</option>
                                 </select>
@@ -288,14 +331,14 @@
                         </div>
                         
                         <!-- Table Wrapper -->
-                        <div class="flex-1 overflow-auto bg-white">
+                        <div class="overflow-x-auto bg-white max-h-[600px] overflow-y-auto">
                             <table class="w-full text-left border-collapse whitespace-nowrap md:whitespace-normal">
-                                <thead class="sticky top-0 bg-gray-50 z-10 border-b border-gray-200">
+                                <thead class="sticky top-0 bg-gray-50/95 backdrop-blur z-10 border-b border-gray-200 shadow-sm">
                                     <tr>
-                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Client Identity</th>
-                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Contact Info</th>
-                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Inquiry Details</th>
-                                        <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Timestamp</th>
+                                        <th class="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Client Identity</th>
+                                        <th class="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Contact Info</th>
+                                        <th class="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Inquiry Details</th>
+                                        <th class="px-6 py-4 text-xs font-extrabold text-gray-500 uppercase tracking-wider">Timestamp</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-body" class="divide-y divide-gray-100">
@@ -304,41 +347,52 @@
                             </table>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- PROFILE VIEW -->
-                <div id="view-profile" class="view-section hidden-view animate-fade-in max-w-3xl mx-auto mt-4">
+                <div id="view-profile" class="view-section hidden-view animate-fade-up max-w-3xl mx-auto mt-4">
                     <div class="card overflow-hidden">
-                        <div class="h-32 bg-brand-600 relative">
-                            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+                        <div class="h-40 bg-gradient-to-r from-brand-600 to-indigo-800 relative">
+                            <!-- Abstract pattern -->
+                            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
                         </div>
-                        <div class="px-8 pb-8">
-                            <div class="relative flex justify-between items-end -mt-12 mb-6">
-                                <img src="https://ui-avatars.com/api/?name=Ravi+Vishwakarma&background=ffffff&color=4f46e5&size=128" alt="Profile" class="w-24 h-24 rounded-2xl border-4 border-white shadow-md bg-white">
-                                <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full border border-emerald-200">Verified Owner</span>
+                        <div class="px-8 pb-10">
+                            <div class="relative flex justify-between items-end -mt-16 mb-6">
+                                <img id="profile-large-avatar" src="https://ui-avatars.com/api/?name=Ravi+Vishwakarma&background=ffffff&color=4f46e5&size=128" alt="Profile" class="w-32 h-32 rounded-2xl border-4 border-white shadow-lg bg-white relative z-10 object-cover">
+                                <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-4 py-1.5 rounded-full border border-emerald-200 flex items-center gap-1">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    Verified Owner
+                                </span>
                             </div>
                             
-                            <h2 class="text-3xl font-heading font-extrabold text-gray-900">Ravi Vishwakarma</h2>
-                            <p class="text-brand-600 font-medium text-sm mt-1">Super Administrator</p>
+                            <h2 id="profile-name" class="text-4xl font-heading font-extrabold text-gray-900 tracking-tight">Ravi Vishwakarma</h2>
+                            <p class="text-brand-600 font-bold text-sm mt-1 uppercase tracking-wider">Super Administrator</p>
                             
-                            <div class="mt-8 pt-6 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <p class="text-sm font-bold text-gray-400 uppercase tracking-wide mb-1">Email Address</p>
-                                    <p class="text-gray-900 font-medium">ravivish517@gmail.com</p>
+                            <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="p-5 bg-gray-50 rounded-xl border border-gray-100">
+                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Email Address</p>
+                                    <p id="profile-email" class="text-gray-900 font-bold text-lg">ravivish517@gmail.com</p>
                                 </div>
-                                <div>
-                                    <p class="text-sm font-bold text-gray-400 uppercase tracking-wide mb-1">Security Level</p>
-                                    <p class="text-gray-900 font-medium">Level 5 (Unrestricted Access)</p>
+                                <div class="p-5 bg-gray-50 rounded-xl border border-gray-100">
+                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Security Level</p>
+                                    <p class="text-gray-900 font-bold text-lg flex items-center gap-2">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                        Level 5 (Unrestricted)
+                                    </p>
                                 </div>
-                                <div>
-                                    <p class="text-sm font-bold text-gray-400 uppercase tracking-wide mb-1">Connected Data Source</p>
-                                    <p class="text-gray-900 font-medium truncate">EvolveAI Production Sheet</p>
+                                <div class="p-5 bg-gray-50 rounded-xl border border-gray-100">
+                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Connected Data Source</p>
+                                    <p class="text-gray-900 font-bold text-lg truncate" title="EvolveAI Production Sheet">EvolveAI Data Hub</p>
                                 </div>
-                                <div>
-                                    <p class="text-sm font-bold text-gray-400 uppercase tracking-wide mb-1">Active Status</p>
+                                <div class="p-5 bg-gray-50 rounded-xl border border-gray-100">
+                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Active Status</p>
                                     <div class="flex items-center gap-2 mt-1">
-                                        <div class="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
-                                        <p class="text-gray-900 font-medium">Online & Listening</p>
+                                        <span class="relative flex h-3 w-3">
+                                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                                        </span>
+                                        <p class="text-gray-900 font-bold text-lg">Online & Syncing</p>
                                     </div>
                                 </div>
                             </div>
@@ -350,7 +404,7 @@
         </main>
 
         <!-- NOTIFICATION CONTAINER (Fixed Top Right) -->
-        <div id="notification-container" class="fixed top-6 right-6 w-80 flex flex-col gap-3 z-50 pointer-events-none">
+        <div id="notification-container" class="fixed top-20 right-6 w-80 flex flex-col gap-3 z-50 pointer-events-none">
             <!-- Notifications injected here -->
         </div>
     </div>
@@ -362,82 +416,138 @@
         const SHEET_ID = "1aXr-k4oPZ2vOnyDsA785PZDpCgjM51wWXbf4MUOy2Yc";
         const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
         
+        // ⚠️ REPLACE THIS WITH YOUR ACTUAL GOOGLE OAUTH CLIENT ID
+        const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com"; 
+
         let globalData = [];
         let lastRowCount = 0;
         let pollingInterval = null;
         let barChartInstance = null;
         let pieChartInstance = null;
+        let userData = null;
 
-        /* --- AUTHENTICATION (Simulated Google OAuth Flow) --- */
-        document.getElementById('google-login-btn').addEventListener('click', function() {
-            // Simulate Google Popup Window
-            const email = prompt("Google Sign-in \n\nChoose an account to continue to Evolve Workspace:", "ravivish517@gmail.com");
+        /* --- GOOGLE OAUTH 2.0 IMPLEMENTATION --- */
+        // Utility to decode JWT token to get user info (Email, Name, Picture)
+        function decodeJwtResponse(token) {
+            let base64Url = token.split('.')[1];
+            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        // Callback function after Google Sign-In is successful
+        function handleCredentialResponse(response) {
+            const responsePayload = decodeJwtResponse(response.credential);
             
-            if (email !== null) {
-                if(email.trim().toLowerCase() === ALLOWED_EMAIL.toLowerCase()) {
-                    localStorage.setItem('evolve_modern_auth', 'true');
-                    initApp();
-                } else {
-                    const err = document.getElementById('login-error');
-                    err.classList.remove('hidden');
-                    setTimeout(() => err.classList.add('hidden'), 4000);
-                }
+            if (responsePayload.email.toLowerCase() === ALLOWED_EMAIL.toLowerCase()) {
+                // Success: Authorized User
+                userData = {
+                    name: responsePayload.name,
+                    email: responsePayload.email,
+                    picture: responsePayload.picture
+                };
+                
+                // Save session securely
+                localStorage.setItem('evolve_modern_auth', JSON.stringify(userData));
+                
+                // Hide login, start app
+                initApp();
+            } else {
+                // Failure: Unauthorized Email
+                const err = document.getElementById('login-error');
+                err.classList.remove('hidden');
+                setTimeout(() => err.classList.add('hidden'), 5000);
             }
-        });
+        }
+
+        // Initialize Google Identity Services on window load
+        window.onload = function () {
+            // Check if user is already logged in
+            const storedUser = localStorage.getItem('evolve_modern_auth');
+            if (storedUser) {
+                userData = JSON.parse(storedUser);
+                initApp();
+                return;
+            }
+
+            // Setup Google Auth Button
+            google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: handleCredentialResponse,
+                context: "signin",
+                ux_mode: "popup"
+            });
+            
+            google.accounts.id.renderButton(
+                document.getElementById("google-buttonDiv"),
+                { 
+                    theme: "outline", 
+                    size: "large", 
+                    width: "100%",
+                    text: "continue_with",
+                    shape: "rectangular"
+                }
+            );
+        };
 
         function logout() {
             localStorage.removeItem('evolve_modern_auth');
             clearInterval(pollingInterval);
             document.getElementById('app-container').classList.add('hidden-view');
             document.getElementById('login-screen').classList.remove('hidden-view');
+            
+            // Optional: Revoke Google token
+            google.accounts.id.disableAutoSelect();
         }
 
-        /* --- INITIALIZATION --- */
-        function checkAuth() {
-            if (localStorage.getItem('evolve_modern_auth') === 'true') {
-                initApp();
-            }
-        }
-
+        /* --- APP INITIALIZATION --- */
         function initApp() {
+            // Hide Login, Show Main App
             document.getElementById('login-screen').classList.add('hidden-view');
             document.getElementById('app-container').classList.remove('hidden-view');
+            
+            // Populate User Data in UI
+            if(userData) {
+                if(userData.picture) {
+                    document.getElementById('user-avatar').src = userData.picture;
+                    document.getElementById('profile-large-avatar').src = userData.picture;
+                }
+                document.getElementById('profile-name').innerText = userData.name || "Admin User";
+                document.getElementById('profile-email').innerText = userData.email || ALLOWED_EMAIL;
+            }
             
             fetchDataInitial(); // First heavy load
             
             // SMART POLLING: Checks in background every 5 seconds.
-            // Doesn't touch DOM unless NEW rows are found.
             pollingInterval = setInterval(smartSilentFetch, 5000);
             
-            // Listeners
+            // Listeners for Table Controls
             document.getElementById('search-input').addEventListener('input', renderTable);
             document.getElementById('filter-subject').addEventListener('change', renderTable);
             document.getElementById('sort-order').addEventListener('change', renderTable);
         }
 
-        /* --- SIDEBAR & TABS --- */
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-
+        /* --- NAVBAR & TABS --- */
         function switchTab(tabId) {
+            // Hide all views
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden-view'));
             
-            document.querySelectorAll('.nav-btn').forEach(el => {
-                el.className = 'nav-btn flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-gray-500 hover:bg-gray-50 hover:text-gray-900 font-medium';
+            // Reset nav links
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('active');
             });
             
+            // Show selected view
             document.getElementById(`view-${tabId}`).classList.remove('hidden-view');
             
+            // Activate clicked nav link
             const activeBtn = document.getElementById(`tab-${tabId}`);
-            activeBtn.className = 'nav-btn flex items-center gap-3 px-4 py-3 rounded-xl transition-all bg-brand-50 text-brand-600 font-semibold';
+            if(activeBtn) activeBtn.classList.add('active');
 
-            if(window.innerWidth < 768) {
-                toggleSidebar(); // Close sidebar on mobile after clicking
-            }
+            // Scroll to top
+            window.scrollTo(0,0);
         }
 
         /* --- DATA ENGINE (Smart Sync) --- */
@@ -474,7 +584,7 @@
                 if (currentData.length > lastRowCount) {
                     const newRowsCount = currentData.length - lastRowCount;
                     
-                    // We extract just the newly added rows (from the bottom of sheet)
+                    // Extract newly added rows
                     const newLeads = currentData.slice(lastRowCount);
                     
                     globalData = currentData;
@@ -500,22 +610,33 @@
             const notifId = 'notif-' + Date.now();
             
             const html = `
-                <div id="${notifId}" class="pointer-events-auto notification-enter bg-white p-4 rounded-xl shadow-float border border-gray-100 flex justify-between items-start">
+                <div id="${notifId}" class="pointer-events-auto notification-enter bg-white p-4 rounded-xl shadow-float border border-brand-100 flex justify-between items-start">
                     <div class="flex gap-3">
                         <div class="w-10 h-10 bg-brand-50 rounded-full flex items-center justify-center text-brand-600 shrink-0">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                         </div>
                         <div>
-                            <h4 class="font-bold text-sm text-gray-900">New Form Submission</h4>
+                            <h4 class="font-extrabold text-sm text-gray-900">New Form Submission</h4>
                             <p class="text-xs text-gray-500 mt-0.5"><strong class="text-gray-700">${name}</strong> via ${subject}</p>
                         </div>
                     </div>
-                    <button onclick="document.getElementById('${notifId}').remove()" class="text-gray-400 hover:text-gray-600">
+                    <button onclick="document.getElementById('${notifId}').remove()" class="text-gray-400 hover:text-gray-600 p-1">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
             `;
             container.insertAdjacentHTML('afterbegin', html);
+            
+            // Auto dismiss after 6 seconds
+            setTimeout(() => {
+                const el = document.getElementById(notifId);
+                if(el) {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(-10px)';
+                    el.style.transition = 'all 0.3s ease';
+                    setTimeout(() => el.remove(), 300);
+                }
+            }, 6000);
         }
 
         /* --- DASHBOARD STATS --- */
@@ -545,14 +666,14 @@
                 <tr class="hover:bg-gray-50 transition-colors ${isNew ? 'new-row' : ''}">
                     <td class="px-6 py-4 align-top border-t border-gray-100">
                         <p class="font-bold text-gray-900">${row['Full Name'] || 'N/A'}</p>
-                        <p class="text-xs text-brand-600 font-mono mt-1 bg-brand-50 inline-block px-1 rounded">${row['Client ID'] || 'N/A'}</p>
+                        <p class="text-xs text-brand-600 font-mono font-bold mt-1 bg-brand-50 inline-block px-1.5 py-0.5 rounded">${row['Client ID'] || 'N/A'}</p>
                     </td>
                     <td class="px-6 py-4 align-top border-t border-gray-100">
-                        <p class="text-sm font-medium text-gray-700">${row['Work Email'] || 'N/A'}</p>
-                        <p class="text-xs text-gray-500 mt-1">${row['Mobile Number'] || 'N/A'}</p>
+                        <p class="text-sm font-semibold text-gray-700">${row['Work Email'] || 'N/A'}</p>
+                        <p class="text-xs text-gray-500 font-medium mt-1">${row['Mobile Number'] || 'N/A'}</p>
                     </td>
                     <td class="px-6 py-4 align-top border-t border-gray-100 max-w-sm">
-                        <span class="inline-block px-2.5 py-1 bg-gray-100 border border-gray-200 rounded-md text-xs font-semibold text-gray-600 mb-2">
+                        <span class="inline-block px-2.5 py-1 bg-gray-100 border border-gray-200 rounded-md text-xs font-bold text-gray-600 mb-2">
                             ${row['Subject'] || 'General'}
                         </span>
                         <p class="text-sm text-gray-600 truncate hover:whitespace-normal hover:overflow-visible transition-all cursor-default" title="${row['Message']}">
@@ -560,14 +681,13 @@
                         </p>
                     </td>
                     <td class="px-6 py-4 align-top border-t border-gray-100">
-                        <p class="text-sm font-medium text-gray-800">${row['Submission Date'] || ''}</p>
-                        <p class="text-xs text-gray-500 mt-1">${row['Submission Time'] || ''}</p>
+                        <p class="text-sm font-semibold text-gray-800">${row['Submission Date'] || ''}</p>
+                        <p class="text-xs text-gray-500 font-medium mt-1">${row['Submission Time'] || ''}</p>
                     </td>
                 </tr>
             `;
         }
 
-        // Full render (Used on load, search, filter, sort)
         function renderTable() {
             const tbody = document.getElementById('table-body');
             const search = document.getElementById('search-input').value.toLowerCase();
@@ -587,31 +707,27 @@
             });
 
             if(filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-12 text-gray-400 font-medium">No leads match your criteria.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-12 text-gray-400 font-bold">No leads match your criteria.</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = filtered.map(row => createRowHTML(row)).join('');
         }
 
-        // Graceful Append (Used by Smart Sync to NOT reset search/scroll state)
         function appendNewRowsToTable(newRows) {
             const tbody = document.getElementById('table-body');
             const sort = document.getElementById('sort-order').value;
-            
-            // Only inject if there's no active search/filter restricting it
             const search = document.getElementById('search-input').value;
             const filter = document.getElementById('filter-subject').value;
             
+            // Only inject if no search/filter is active
             if (search.trim() !== '' || filter !== 'All') {
-                // If user is actively searching, just re-evaluate silently.
                 renderTable(); 
                 return;
             }
 
             let htmlString = newRows.map(row => createRowHTML(row, true)).join('');
             
-            // If sorted by Newest (Default), new rows go at the TOP.
             if (sort === 'newest') {
                 tbody.insertAdjacentHTML('afterbegin', htmlString);
             } else {
@@ -619,8 +735,8 @@
             }
         }
 
-        /* --- CHARTS (Modern Light Theme) --- */
-        const chartColors = ['#4f46e5', '#06b6d4', '#10b981', '#f59e0b', '#f43f5e', '#8b5cf6'];
+        /* --- CHARTS (Modern SaaS Theme) --- */
+        const chartColors = ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#f43f5e', '#8b5cf6'];
         
         function getChartData() {
             const dateCounts = {}, subCounts = {};
@@ -642,13 +758,14 @@
         function initCharts() {
             Chart.defaults.font.family = 'Inter';
             Chart.defaults.color = '#64748b';
+            Chart.defaults.font.weight = '600';
             
             const data = getChartData();
             
             const barCtx = document.getElementById('barChart').getContext('2d');
             const gradient = barCtx.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, '#6366f1'); // brand-500
-            gradient.addColorStop(1, '#a5b4fc'); // brand-300
+            gradient.addColorStop(0, '#6366f1'); 
+            gradient.addColorStop(1, '#a5b4fc'); 
 
             barChartInstance = new Chart(barCtx, {
                 type: 'bar',
@@ -659,7 +776,9 @@
                         data: data.counts,
                         backgroundColor: gradient,
                         borderRadius: 6,
-                        borderSkipped: false
+                        borderSkipped: false,
+                        barThickness: 'flex',
+                        maxBarThickness: 40
                     }]
                 },
                 options: {
@@ -686,8 +805,8 @@
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    cutout: '65%',
-                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } }
+                    cutout: '70%',
+                    plugins: { legend: { position: 'right', labels: { usePointStyle: true, padding: 20, font: {weight: '600'} } } }
                 }
             });
         }
@@ -704,9 +823,6 @@
             pieChartInstance.data.datasets[0].data = data.subValues;
             pieChartInstance.update();
         }
-
-        // Run Auth check automatically
-        checkAuth();
     </script>
 </body>
 </html>
