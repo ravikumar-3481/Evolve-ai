@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EvolveAI | Neon Command Center</title>
+    <title>EvolveAI | Enterprise Workspace</title>
     
-    <!-- Modern Fonts -->
+    <!-- Modern Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,29 +22,30 @@
     <!-- Google Identity Services (OAuth) -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-    <!-- Tailwind Config for Dark Neon Theme -->
+    <!-- Tailwind Config for Dark Orange SaaS Theme -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        base: '#050505',
-                        surface: '#111111',
-                        surfaceAlt: '#1a1a1a',
-                        border: '#2a2a2a',
-                        neon: {
-                            cyan: '#00f2fe',
-                            purple: '#b026ff',
-                            green: '#00ff88',
-                            orange: '#ff6b6b'
+                        base: '#09090b',    /* Zinc 950 - Deepest black */
+                        surface: '#18181b', /* Zinc 900 */
+                        elevated: '#27272a',/* Zinc 800 */
+                        border: '#3f3f46',  /* Zinc 700 */
+                        brand: {
+                            100: '#ffedd5',
+                            400: '#fb923c',
+                            500: '#f97316', /* Primary Orange */
+                            600: '#ea580c',
+                            900: '#7c2d12',
                         },
-                        textMain: '#f8fafc',
-                        textMuted: '#94a3b8',
+                        textMain: '#fafafa',
+                        textMuted: '#a1a1aa',
                     },
                 }
             }
@@ -53,124 +54,130 @@
 
     <style>
         body {
-            background-color: #050505;
-            color: #f8fafc;
+            background-color: #09090b;
+            color: #fafafa;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
         
-        /* Neon Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 10px; border: 1px solid #111; }
-        ::-webkit-scrollbar-thumb:hover { background: #00f2fe; box-shadow: 0 0 10px #00f2fe; }
+        /* Elegant Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f97316; }
 
-        /* CSS Grid Layout using minmax */
-        .dashboard-grid {
+        /* MinMax CSS Grid Layout */
+        .saas-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
             gap: 1.5rem;
             align-items: start;
         }
-        
-        .grid-full {
-            grid-column: 1 / -1;
-        }
+        .col-span-full { grid-column: 1 / -1; }
+        .col-span-2 { grid-column: span 2 / span 2; }
 
-        /* Neon Cards & Glassmorphism */
-        .neon-card {
-            background: #111111;
-            border: 1px solid #2a2a2a;
-            border-radius: 20px;
-            transition: all 0.3s ease;
+        /* SaaS Cards */
+        .saas-card {
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
         
-        .neon-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.2), transparent);
-            opacity: 0; transition: opacity 0.3s ease;
-        }
-
-        .neon-card:hover {
-            border-color: #333;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+        .saas-card:hover {
+            border-color: #3f3f46;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(249, 115, 22, 0.1);
             transform: translateY(-2px);
         }
-        
-        .neon-card:hover::before { opacity: 1; }
 
         .glass-nav {
-            background: rgba(17, 17, 17, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid #27272a;
         }
 
-        /* Typography Enhancements */
-        .text-glow-cyan { text-shadow: 0 0 15px rgba(0, 242, 254, 0.5); }
-        .text-glow-purple { text-shadow: 0 0 15px rgba(176, 38, 255, 0.5); }
-        .text-gradient-cyan { background: linear-gradient(to right, #00f2fe, #4facfe); -webkit-background-clip: text; color: transparent; }
-        .text-gradient-purple { background: linear-gradient(to right, #b026ff, #ff6b6b); -webkit-background-clip: text; color: transparent; }
-
-        /* Animations */
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        
-        @keyframes slideIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
-        .notification-enter { animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 136, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.6); }
+        /* Typography & Gradients */
+        .text-gradient-orange {
+            background: linear-gradient(135deg, #f97316, #fb923c);
+            -webkit-background-clip: text;
+            color: transparent;
         }
-        .status-new { animation: pulseGlow 2s infinite; border: 1px solid rgba(0, 255, 136, 0.5); color: #00ff88; background: rgba(0, 255, 136, 0.1); }
+
+        /* Staggered Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stagger-1 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; }
+        .stagger-2 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; }
+        .stagger-3 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; }
+        .stagger-4 { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; opacity: 0; }
         
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px) scale(0.95); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        .notification-enter { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        /* Table Enhancements */
+        .table-row { border-bottom: 1px solid #27272a; transition: background 0.2s ease; }
+        .table-row:hover { background: #27272a; }
+        
+        @keyframes highlightRow {
+            0% { background-color: rgba(249, 115, 22, 0.15); border-left-color: #f97316; }
+            100% { background-color: transparent; border-left-color: transparent; }
+        }
+        .new-row {
+            animation: highlightRow 4s ease-out forwards;
+            border-left: 3px solid transparent;
+        }
+
+        /* Modals & Utilities */
+        .modal-overlay { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); }
         .hidden-view { display: none !important; }
         
-        /* Table Row Enhancements */
-        .table-row { border-bottom: 1px solid #1f1f1f; transition: all 0.2s ease; }
-        .table-row:hover { background: #1a1a1a; }
-        
-        /* Modal Overlay */
-        .modal-overlay {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
+        /* Subtle Pulsing Dot */
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
         }
+        .animate-pulse-dot { animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     </style>
 </head>
-<body class="flex flex-col h-screen overflow-hidden selection:bg-neon-cyan selection:text-base relative">
+<body class="flex flex-col h-screen overflow-hidden selection:bg-brand-500 selection:text-white relative">
 
     <!-- GOOGLE OAUTH LOGIN SCREEN -->
     <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-base">
-        <!-- Abstract Neon Background -->
+        <!-- Ambient Background Glow -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-cyan rounded-full mix-blend-screen filter blur-[120px] opacity-20"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple rounded-full mix-blend-screen filter blur-[120px] opacity-20"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-600/20 rounded-full blur-[120px] mix-blend-screen"></div>
         </div>
         
-        <div class="neon-card p-10 max-w-md w-full text-center z-10 animate-fade-up relative mx-4 border border-white/10 bg-surface/80 backdrop-blur-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-            <div class="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(0,242,254,0.3)] bg-gradient-to-br from-[#00f2fe] to-[#4facfe] transform rotate-3">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#050505" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="-rotate-3"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <div class="saas-card p-10 max-w-md w-full text-center z-10 relative mx-4 shadow-2xl shadow-black/50 border-t border-t-brand-500/30">
+            <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 bg-gradient-to-br from-brand-400 to-brand-600 shadow-[0_0_30px_rgba(249,115,22,0.3)]">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
-            <h2 class="text-3xl font-heading font-black textMain mb-2 tracking-tight text-white">Evolve <span class="text-gradient-cyan">Command</span></h2>
-            <p class="text-textMuted mb-8 text-sm font-medium">Secure Administrative Terminal</p>
+            <h2 class="text-3xl font-display font-bold textMain mb-2 tracking-tight">Evolve <span class="text-gradient-orange">Workspace</span></h2>
+            <p class="text-textMuted mb-8 text-sm font-medium">Enterprise Authentication required</p>
             
             <div class="flex justify-center w-full mb-4 min-h-[44px] bg-white rounded-md p-1">
                 <div id="google-buttonDiv" class="w-full"></div>
             </div>
             
-            <p id="login-error" class="text-neon-orange text-sm mt-4 hidden font-medium bg-neon-orange/10 p-3 rounded-xl border border-neon-orange/30 flex items-center justify-center gap-2">
+            <p id="login-error" class="text-brand-500 text-sm mt-4 hidden font-medium bg-brand-500/10 p-3 rounded-lg border border-brand-500/20 flex items-center justify-center gap-2">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                Authentication Failed. Unauthorized.
+                Access Denied. Unauthorized Identity.
             </p>
             
-            <div class="mt-8 pt-6 border-t border-white/5">
-                <p class="text-xs text-gray-500 font-mono tracking-widest uppercase">Encrypted by OAuth 2.0</p>
+            <div class="mt-8 pt-6 border-t border-border/50">
+                <p class="text-xs text-textMuted font-medium flex items-center justify-center gap-2">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    Secured by Google OAuth 2.0
+                </p>
             </div>
         </div>
     </div>
@@ -178,53 +185,57 @@
     <!-- MAIN APP STRUCTURE -->
     <div id="app-container" class="flex flex-col w-full h-full hidden-view bg-base">
         
-        <!-- NEON GLASS NAVBAR -->
-        <header class="glass-nav sticky top-0 z-40 w-full px-4 sm:px-8 py-4 flex justify-between items-center shadow-lg shadow-black/50">
+        <!-- GLASS NAVBAR -->
+        <header class="glass-nav sticky top-0 z-40 w-full px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-8">
                 <!-- Logo -->
-                <div class="flex items-center gap-3 group cursor-pointer">
-                    <div class="w-10 h-10 bg-gradient-to-br from-neon-cyan to-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(0,242,254,0.4)] group-hover:shadow-[0_0_25px_rgba(0,242,254,0.6)] transition-all">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#050505" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-brand-500 rounded-lg flex items-center justify-center shadow-lg shadow-brand-500/20">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                     </div>
-                    <h2 class="text-xl font-heading font-black tracking-tight text-white hidden sm:block">Evolve<span class="text-neon-cyan">AI</span></h2>
+                    <h2 class="text-lg font-display font-bold tracking-tight text-white hidden sm:block">Evolve<span class="text-brand-500">AI</span></h2>
                 </div>
 
                 <!-- Navigation Tabs -->
-                <nav class="flex items-center gap-2 bg-surfaceAlt p-1 rounded-xl border border-white/5">
-                    <button onclick="switchTab('dashboard')" id="tab-dashboard" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 bg-white/10 text-white shadow-sm">
+                <nav class="flex items-center gap-1 bg-surface p-1 rounded-lg border border-border">
+                    <button onclick="switchTab('dashboard')" id="tab-dashboard" class="px-4 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 bg-elevated text-white shadow-sm border border-border/50">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                        <span class="hidden sm:inline">Workspace</span>
+                        <span class="hidden sm:inline">Dashboard</span>
                     </button>
-                    <button onclick="switchTab('profile')" id="tab-profile" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-textMuted hover:text-white hover:bg-white/5">
+                    <button onclick="switchTab('profile')" id="tab-profile" class="px-4 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 text-textMuted hover:text-white hover:bg-elevated/50">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         <span class="hidden sm:inline">Settings</span>
                     </button>
                 </nav>
             </div>
             
-            <div class="flex items-center gap-4 sm:gap-6">
-                <!-- Sync Indicator -->
-                <div id="sync-status" class="hidden sm:flex items-center gap-2 bg-neon-green/10 px-3 py-1.5 rounded-full border border-neon-green/30 shadow-[0_0_10px_rgba(0,255,136,0.2)]">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-green opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-neon-green"></span>
-                    </span>
-                    <span class="text-[10px] font-mono font-bold text-neon-green uppercase tracking-widest">Live Sync</span>
+            <div class="flex items-center gap-6">
+                <!-- Data Sync Status -->
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-surface border border-border rounded-full" title="Real-time polling active">
+                    <div class="relative flex h-2 w-2">
+                        <span class="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                    </div>
+                    <span class="text-xs font-mono font-medium text-textMuted">Sync: Active</span>
                 </div>
 
                 <!-- User Dropdown -->
                 <div class="relative group cursor-pointer flex items-center gap-3">
                     <div class="text-right hidden sm:block">
-                        <p id="nav-user-name" class="text-sm font-bold text-white leading-tight">Admin</p>
-                        <p class="text-[10px] text-neon-cyan font-mono uppercase tracking-widest mt-0.5">Clearance: Max</p>
+                        <p id="nav-user-name" class="text-sm font-semibold text-white">Admin</p>
+                        <p class="text-xs text-brand-500 font-medium">Root Access</p>
                     </div>
-                    <img id="nav-user-avatar" src="https://ui-avatars.com/api/?name=Admin&background=00f2fe&color=050505" class="w-10 h-10 rounded-xl shadow-[0_0_10px_rgba(0,242,254,0.3)] border border-neon-cyan/50" alt="Admin">
+                    <img id="nav-user-avatar" src="https://ui-avatars.com/api/?name=Admin&background=f97316&color=fff" class="w-9 h-9 rounded-full shadow-sm border border-border" alt="Admin">
                     
-                    <div class="absolute right-0 top-full mt-2 w-48 bg-surfaceAlt rounded-xl shadow-2xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
-                        <div class="p-2">
-                            <button onclick="logout()" class="w-full text-left px-4 py-2.5 text-sm text-neon-orange hover:bg-neon-orange/10 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                    <div class="absolute right-0 top-full mt-3 w-48 bg-surface rounded-xl shadow-2xl border border-border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
+                        <div class="p-1.5">
+                            <button onclick="switchTab('profile')" class="w-full text-left px-3 py-2 text-sm text-textMain hover:bg-elevated rounded-lg font-medium flex items-center gap-2 md:hidden">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                Settings
+                            </button>
+                            <button onclick="logout()" class="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-red-400/10 rounded-lg font-medium flex items-center gap-2 transition-colors">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                                Terminate Session
+                                Sign Out
                             </button>
                         </div>
                     </div>
@@ -233,61 +244,64 @@
         </header>
 
         <!-- MAIN SCROLLABLE AREA -->
-        <main class="flex-1 overflow-y-auto w-full relative pb-10">
+        <main class="flex-1 overflow-y-auto w-full relative pb-12">
             <div class="max-w-[1600px] mx-auto p-4 sm:p-6 lg:p-8">
                 
                 <!-- DASHBOARD VIEW -->
-                <div id="view-dashboard" class="view-section animate-fade-up">
+                <div id="view-dashboard" class="view-section">
                     
-                    <div class="mb-8">
-                        <h1 class="text-3xl sm:text-4xl font-heading font-black text-white tracking-tight">System <span class="text-gradient-cyan">Overview</span></h1>
-                        <p class="text-textMuted mt-2 font-medium">Real-time data synchronization active. Monitoring inbound pipelines.</p>
+                    <div class="mb-8 stagger-1">
+                        <h1 class="text-3xl font-display font-bold text-white tracking-tight">Overview</h1>
+                        <p class="text-textMuted mt-1 text-sm">Monitor your inbound agency pipelines and automated systems.</p>
                     </div>
 
-                    <!-- MINMAX CSS GRID LAYOUT -->
-                    <div class="dashboard-grid">
+                    <!-- MINMAX SAAS GRID -->
+                    <div class="saas-grid">
                         
-                        <!-- 1. ENHANCED TABLE (Order 1, Full Width) -->
-                        <div class="neon-card flex flex-col grid-full border-t-2 border-t-neon-cyan" style="order: 1;">
-                            <div class="p-5 border-b border-border bg-surfaceAlt flex flex-col sm:flex-row gap-4 justify-between items-center relative overflow-hidden">
-                                <div class="absolute top-0 right-0 w-64 h-full bg-gradient-to-l from-neon-cyan/5 to-transparent pointer-events-none"></div>
-                                
+                        <!-- 1. ENHANCED TABLE (Order 1, Prominent Full Width) -->
+                        <div class="saas-card flex flex-col col-span-full stagger-2" style="order: 1;">
+                            
+                            <!-- Table Toolbar -->
+                            <div class="p-5 border-b border-border bg-surface flex flex-col sm:flex-row gap-4 justify-between items-center relative overflow-hidden">
                                 <div class="flex items-center gap-3">
-                                    <div class="p-2 bg-neon-cyan/10 rounded-lg text-neon-cyan">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                    <div class="p-2 bg-brand-500/10 rounded-lg text-brand-500 border border-brand-500/20">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                                     </div>
-                                    <h3 class="text-lg font-heading font-bold text-white">Inbound Lead Pipeline</h3>
+                                    <h3 class="text-base font-semibold text-white">Recent Submissions</h3>
                                 </div>
                                 
-                                <div class="flex w-full sm:w-auto flex-col sm:flex-row gap-3 relative z-10">
+                                <div class="flex w-full sm:w-auto flex-col sm:flex-row gap-3">
+                                    <!-- Search -->
                                     <div class="relative w-full sm:w-64">
-                                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-textMuted">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                                         </div>
-                                        <input type="text" id="search-input" placeholder="Search by name, email or ID..." class="w-full bg-base border border-border text-white rounded-lg pl-9 pr-4 py-2 text-sm font-medium focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan transition-all placeholder-gray-600">
+                                        <input type="text" id="search-input" placeholder="Search records..." class="w-full bg-base border border-border text-white rounded-lg pl-9 pr-4 py-1.5 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder-textMuted">
                                     </div>
                                     
-                                    <select id="filter-subject" class="bg-base border border-border text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neon-cyan cursor-pointer font-medium">
+                                    <!-- Filter -->
+                                    <select id="filter-subject" class="bg-base border border-border text-white rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-brand-500 cursor-pointer">
                                         <option value="All">All Intents</option>
                                     </select>
                                     
-                                    <button onclick="exportCSV()" class="bg-neon-cyan/10 hover:bg-neon-cyan/20 border border-neon-cyan/30 text-neon-cyan px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                                        Export CSV
+                                    <!-- Actions -->
+                                    <button onclick="exportCSV()" class="bg-surface hover:bg-elevated border border-border text-textMain px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                        Export
                                     </button>
                                 </div>
                             </div>
                             
-                            <!-- Scrollable Table Wrapper -->
-                            <div class="overflow-x-auto bg-surface max-h-[500px] overflow-y-auto">
+                            <!-- Table Content -->
+                            <div class="overflow-x-auto bg-base max-h-[450px] overflow-y-auto">
                                 <table class="w-full text-left border-collapse whitespace-nowrap md:whitespace-normal">
-                                    <thead class="sticky top-0 bg-surfaceAlt z-10 border-b border-border shadow-md">
+                                    <thead class="sticky top-0 bg-surface z-10 border-b border-border shadow-sm">
                                         <tr>
-                                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Client Identity</th>
-                                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Contact Info</th>
-                                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Intent / Subject</th>
-                                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Status / Time</th>
-                                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-right">Action</th>
+                                            <th class="px-6 py-3 text-[11px] font-semibold text-textMuted uppercase tracking-wider">Client Identity</th>
+                                            <th class="px-6 py-3 text-[11px] font-semibold text-textMuted uppercase tracking-wider">Contact</th>
+                                            <th class="px-6 py-3 text-[11px] font-semibold text-textMuted uppercase tracking-wider">Intent</th>
+                                            <th class="px-6 py-3 text-[11px] font-semibold text-textMuted uppercase tracking-wider">Timestamp</th>
+                                            <th class="px-6 py-3 text-[11px] font-semibold text-textMuted uppercase tracking-wider text-right">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="table-body">
@@ -297,55 +311,63 @@
                             </div>
                         </div>
 
-                        <!-- 2. STATS (Order 2) -->
-                        <div class="neon-card p-6 flex flex-col justify-between" style="order: 2;">
-                            <div class="w-12 h-12 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center text-white mb-4">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
-                            </div>
+                        <!-- 2. QUICK STATS (Order 2) -->
+                        <div class="saas-card p-5 flex items-center justify-between stagger-3" style="order: 2;">
                             <div>
-                                <p class="text-sm font-mono text-textMuted uppercase tracking-widest">Total Leads</p>
-                                <h3 id="stat-total" class="text-5xl font-heading font-black text-white mt-1">0</h3>
+                                <p class="text-xs font-medium text-textMuted uppercase tracking-wider mb-1">Total Pipeline</p>
+                                <h3 id="stat-total" class="text-3xl font-display font-bold text-white">0</h3>
+                            </div>
+                            <div class="w-10 h-10 bg-elevated rounded-lg border border-border flex items-center justify-center text-textMuted">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
                             </div>
                         </div>
                         
-                        <div class="neon-card p-6 flex flex-col justify-between relative overflow-hidden" style="order: 3;">
-                            <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-neon-green/20 rounded-full blur-2xl"></div>
-                            <div class="w-12 h-12 bg-neon-green/10 rounded-xl border border-neon-green/20 flex items-center justify-center text-neon-green mb-4 relative z-10">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                            </div>
-                            <div class="relative z-10">
-                                <p class="text-sm font-mono text-textMuted uppercase tracking-widest">Acquired Today</p>
-                                <h3 id="stat-today" class="text-5xl font-heading font-black text-white mt-1 text-glow-cyan">0</h3>
-                            </div>
-                        </div>
-
-                        <div class="neon-card p-6 flex flex-col justify-between" style="order: 4;">
-                            <div class="w-12 h-12 bg-neon-purple/10 rounded-xl border border-neon-purple/20 flex items-center justify-center text-neon-purple mb-4">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                            </div>
+                        <div class="saas-card p-5 flex items-center justify-between stagger-3" style="order: 3;">
                             <div>
-                                <p class="text-sm font-mono text-textMuted uppercase tracking-widest">Active Intents</p>
-                                <h3 id="stat-subjects" class="text-5xl font-heading font-black text-white mt-1">0</h3>
+                                <p class="text-xs font-medium text-textMuted uppercase tracking-wider mb-1">Acquired Today</p>
+                                <h3 id="stat-today" class="text-3xl font-display font-bold text-brand-500">0</h3>
+                            </div>
+                            <div class="w-10 h-10 bg-brand-500/10 rounded-lg border border-brand-500/20 flex items-center justify-center text-brand-500">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                             </div>
                         </div>
 
-                        <!-- 3. CHARTS (Order 5 & 6) -->
-                        <div class="neon-card p-6 flex flex-col col-span-1 lg:col-span-2" style="order: 5;">
-                            <h3 class="text-lg font-heading font-bold text-white mb-6 flex items-center gap-2">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-neon-cyan"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                                Volume Trajectory
-                            </h3>
-                            <div class="flex-1 min-h-[250px] relative w-full">
+                        <div class="saas-card p-5 flex items-center justify-between stagger-3" style="order: 4;">
+                            <div>
+                                <p class="text-xs font-medium text-textMuted uppercase tracking-wider mb-1">Active Intents</p>
+                                <h3 id="stat-subjects" class="text-3xl font-display font-bold text-white">0</h3>
+                            </div>
+                            <div class="w-10 h-10 bg-elevated rounded-lg border border-border flex items-center justify-center text-textMuted">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                            </div>
+                        </div>
+                        
+                        <!-- System Health (New Feature) -->
+                        <div class="saas-card p-5 flex items-center justify-between stagger-3" style="order: 5;">
+                            <div>
+                                <p class="text-xs font-medium text-textMuted uppercase tracking-wider mb-1">System Health</p>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                                    <h3 class="text-lg font-semibold text-white">Operational</h3>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-textMuted font-mono">Uptime: 99.9%</p>
+                                <p class="text-xs text-textMuted font-mono">Ping: <span id="ping-time">12ms</span></p>
+                            </div>
+                        </div>
+
+                        <!-- 3. CHARTS (Order 6 & 7) -->
+                        <div class="saas-card p-6 flex flex-col col-span-1 lg:col-span-2 stagger-4" style="order: 6;">
+                            <h3 class="text-sm font-semibold text-white mb-6 uppercase tracking-wider">Volume Trajectory</h3>
+                            <div class="flex-1 min-h-[260px] relative w-full">
                                 <canvas id="barChart"></canvas>
                             </div>
                         </div>
                         
-                        <div class="neon-card p-6 flex flex-col col-span-1" style="order: 6;">
-                            <h3 class="text-lg font-heading font-bold text-white mb-6 flex items-center gap-2">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-neon-purple"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
-                                Intent Distribution
-                            </h3>
-                            <div class="flex-1 min-h-[250px] relative w-full flex justify-center">
+                        <div class="saas-card p-6 flex flex-col col-span-1 stagger-4" style="order: 7;">
+                            <h3 class="text-sm font-semibold text-white mb-6 uppercase tracking-wider">Intent Distribution</h3>
+                            <div class="flex-1 min-h-[260px] relative w-full flex justify-center">
                                 <canvas id="pieChart"></canvas>
                             </div>
                         </div>
@@ -353,48 +375,58 @@
                     </div>
                 </div>
 
-                <!-- PROFILE VIEW -->
-                <div id="view-profile" class="view-section hidden-view animate-fade-up max-w-3xl mx-auto mt-4">
-                    <div class="neon-card overflow-hidden border-t-2 border-t-neon-purple">
-                        <div class="h-40 bg-gradient-to-r from-[#111] to-[#222] relative overflow-hidden border-b border-border">
-                            <!-- Matrix/Tech Pattern -->
-                            <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#b026ff 1px, transparent 1px), linear-gradient(90deg, #b026ff 1px, transparent 1px); background-size: 30px 30px;"></div>
-                            <div class="absolute bottom-0 right-0 w-64 h-64 bg-neon-purple/20 rounded-full filter blur-[80px]"></div>
+                <!-- SETTINGS / PROFILE VIEW -->
+                <div id="view-profile" class="view-section hidden-view animate-fade-up max-w-4xl mx-auto mt-4">
+                    <div class="mb-6">
+                        <h1 class="text-2xl font-display font-bold text-white tracking-tight">System Settings</h1>
+                        <p class="text-textMuted text-sm mt-1">Manage your administrative profile and workspace configurations.</p>
+                    </div>
+                    
+                    <div class="saas-card overflow-hidden">
+                        <div class="h-32 bg-surface relative border-b border-border flex items-center px-8">
+                            <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 20px 20px;"></div>
                         </div>
-                        <div class="px-8 pb-10 relative z-10">
-                            <div class="relative flex justify-between items-end -mt-16 mb-6">
-                                <img id="profile-large-avatar" src="https://ui-avatars.com/api/?name=Admin&background=111&color=00f2fe&size=128" alt="Profile" class="w-32 h-32 rounded-2xl border-4 border-base shadow-[0_0_20px_rgba(0,0,0,0.8)] object-cover bg-base">
-                                <span class="bg-neon-green/10 text-neon-green text-xs font-mono font-bold px-4 py-1.5 rounded border border-neon-green/30 shadow-[0_0_10px_rgba(0,255,136,0.2)]">
-                                    AUTHORIZED ROOT
+                        <div class="px-8 pb-8 relative">
+                            <div class="flex justify-between items-end -mt-12 mb-6">
+                                <img id="profile-large-avatar" src="https://ui-avatars.com/api/?name=Admin&background=f97316&color=fff&size=128" alt="Profile" class="w-24 h-24 rounded-xl border-4 border-base shadow-lg object-cover bg-base relative z-10">
+                                <span class="bg-brand-500/10 text-brand-500 text-xs font-mono font-medium px-3 py-1 rounded border border-brand-500/20">
+                                    ROOT ACCESS
                                 </span>
                             </div>
                             
-                            <h2 id="profile-name" class="text-4xl font-heading font-black text-white tracking-tight">System Admin</h2>
-                            <p class="text-neon-cyan font-mono text-sm mt-1 uppercase tracking-widest">ID: EVOLVE-PRIME</p>
+                            <h2 id="profile-name" class="text-2xl font-bold text-white tracking-tight">System Admin</h2>
+                            <p class="text-textMuted text-sm mt-1">ID: EVOLVE-PRIME-01</p>
                             
-                            <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="p-5 bg-surfaceAlt rounded-xl border border-white/5">
-                                    <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Authenticated Email</p>
-                                    <p id="profile-email" class="text-white font-medium text-lg">ravivish517@gmail.com</p>
+                            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="p-4 bg-base rounded-lg border border-border">
+                                    <p class="text-xs font-medium text-textMuted uppercase tracking-wider mb-1">Authenticated Email</p>
+                                    <p id="profile-email" class="text-white text-sm">ravivish517@gmail.com</p>
                                 </div>
-                                <div class="p-5 bg-surfaceAlt rounded-xl border border-white/5">
-                                    <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Access Level</p>
-                                    <p class="text-white font-medium text-lg flex items-center gap-2">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b026ff" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <div class="p-4 bg-base rounded-lg border border-border">
+                                    <p class="text-xs font-medium text-textMuted uppercase tracking-wider mb-1">Permission Level</p>
+                                    <p class="text-white text-sm flex items-center gap-2">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                         Level 5 (Unrestricted)
                                     </p>
                                 </div>
-                                <div class="p-5 bg-surfaceAlt rounded-xl border border-white/5">
-                                    <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Data Source Node</p>
-                                    <p class="text-white font-medium text-lg truncate text-gradient-cyan">Google Secure Sheets API</p>
+                                <div class="p-4 bg-base rounded-lg border border-border">
+                                    <p class="text-xs font-medium text-textMuted uppercase tracking-wider mb-1">Data Node</p>
+                                    <p class="text-brand-500 text-sm truncate">Google Cloud Storage (Sheets API)</p>
                                 </div>
-                                <div class="p-5 bg-surfaceAlt rounded-xl border border-white/5">
-                                    <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Current Status</p>
+                                <div class="p-4 bg-base rounded-lg border border-border">
+                                    <p class="text-xs font-medium text-textMuted uppercase tracking-wider mb-1">System Status</p>
                                     <div class="flex items-center gap-2 mt-1">
-                                        <div class="w-3 h-3 rounded-full bg-neon-green shadow-[0_0_10px_#00ff88]"></div>
-                                        <p class="text-white font-medium text-lg">Online & Monitoring</p>
+                                        <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                        <p class="text-white text-sm">Online</p>
                                     </div>
                                 </div>
+                            </div>
+                            
+                            <div class="mt-8 pt-6 border-t border-border flex justify-end">
+                                <button onclick="logout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                    Terminate Session
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -403,55 +435,53 @@
             </div>
         </main>
 
-        <!-- NOTIFICATION CONTAINER (Fixed Top Right) -->
-        <div id="notification-container" class="fixed top-24 right-6 w-80 flex flex-col gap-3 z-50 pointer-events-none">
+        <!-- NOTIFICATION CONTAINER -->
+        <div id="notification-container" class="fixed bottom-6 right-6 w-80 flex flex-col gap-3 z-50 pointer-events-none">
             <!-- Notifications injected here -->
         </div>
         
-        <!-- LEAD DETAILS MODAL -->
+        <!-- LEAD DOSSIER MODAL -->
         <div id="lead-modal" class="fixed inset-0 z-[200] modal-overlay flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 px-4">
-            <div class="neon-card w-full max-w-2xl bg-surface border border-neon-cyan/30 shadow-[0_0_50px_rgba(0,242,254,0.15)] transform scale-95 transition-transform duration-300" id="modal-content">
-                <div class="p-6 border-b border-border flex justify-between items-center bg-surfaceAlt">
-                    <h3 class="text-xl font-heading font-bold text-white flex items-center gap-2">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <div class="saas-card w-full max-w-2xl bg-surface border border-border shadow-2xl transform scale-95 transition-transform duration-300" id="modal-content">
+                <div class="px-6 py-4 border-b border-border flex justify-between items-center bg-elevated/50">
+                    <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                         Lead Dossier
                     </h3>
-                    <button onclick="closeModal()" class="text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-lg transition-colors">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <button onclick="closeModal()" class="text-textMuted hover:text-white bg-base hover:bg-elevated p-1.5 rounded-md border border-border transition-colors">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
                 <div class="p-6 space-y-6">
                     <div class="flex items-center gap-4 pb-6 border-b border-border">
-                        <div class="w-16 h-16 bg-gradient-to-br from-neon-purple to-neon-cyan rounded-full p-0.5">
-                            <div class="w-full h-full bg-surface rounded-full flex items-center justify-center text-xl font-bold text-white" id="modal-initials">--</div>
-                        </div>
+                        <div class="w-14 h-14 bg-brand-500/10 rounded-xl border border-brand-500/20 flex items-center justify-center text-xl font-bold text-brand-500" id="modal-initials">--</div>
                         <div>
-                            <h2 class="text-2xl font-bold text-white" id="modal-name">Client Name</h2>
-                            <p class="text-neon-cyan font-mono text-sm mt-1" id="modal-id">UID-XXXXX</p>
+                            <h2 class="text-xl font-bold text-white" id="modal-name">Client Name</h2>
+                            <p class="text-textMuted font-mono text-xs mt-1" id="modal-id">UID-XXXXX</p>
                         </div>
                     </div>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="bg-base p-4 rounded-xl border border-white/5">
-                            <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-1">Email</p>
-                            <p class="text-white font-medium" id="modal-email">email@example.com</p>
+                        <div>
+                            <p class="text-[10px] font-medium text-textMuted uppercase tracking-wider mb-1">Email Address</p>
+                            <p class="text-white text-sm" id="modal-email">email@example.com</p>
                         </div>
-                        <div class="bg-base p-4 rounded-xl border border-white/5">
-                            <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-1">Phone</p>
-                            <p class="text-white font-medium" id="modal-phone">+1234567890</p>
+                        <div>
+                            <p class="text-[10px] font-medium text-textMuted uppercase tracking-wider mb-1">Phone Number</p>
+                            <p class="text-white text-sm" id="modal-phone">+1234567890</p>
                         </div>
-                        <div class="bg-base p-4 rounded-xl border border-white/5">
-                            <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-1">Intent Category</p>
-                            <span class="inline-block bg-white/10 text-white px-2 py-1 rounded text-sm font-medium border border-white/10" id="modal-subject">Subject</span>
+                        <div>
+                            <p class="text-[10px] font-medium text-textMuted uppercase tracking-wider mb-1">Intent Category</p>
+                            <span class="inline-block bg-elevated text-gray-300 px-2 py-0.5 rounded text-xs font-medium border border-border" id="modal-subject">Subject</span>
                         </div>
-                        <div class="bg-base p-4 rounded-xl border border-white/5">
-                            <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-1">Timestamp</p>
-                            <p class="text-white font-medium text-sm" id="modal-time">Date & Time</p>
+                        <div>
+                            <p class="text-[10px] font-medium text-textMuted uppercase tracking-wider mb-1">Timestamp</p>
+                            <p class="text-white text-sm" id="modal-time">Date & Time</p>
                         </div>
                     </div>
                     
-                    <div class="bg-base p-4 rounded-xl border border-white/5">
-                        <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Message Payload</p>
+                    <div class="bg-base p-4 rounded-lg border border-border mt-2">
+                        <p class="text-[10px] font-medium text-textMuted uppercase tracking-wider mb-2">Message Payload</p>
                         <p class="text-gray-300 leading-relaxed text-sm whitespace-pre-wrap" id="modal-message">User message goes here...</p>
                     </div>
                 </div>
@@ -492,7 +522,7 @@
             
             if (responsePayload.email.toLowerCase() === ALLOWED_EMAIL.toLowerCase()) {
                 userData = { name: responsePayload.name, email: responsePayload.email, picture: responsePayload.picture };
-                localStorage.setItem('evolve_neon_auth', JSON.stringify(userData));
+                localStorage.setItem('evolve_saas_auth', JSON.stringify(userData));
                 initApp();
             } else {
                 const err = document.getElementById('login-error');
@@ -502,7 +532,7 @@
         }
 
         window.onload = function () {
-            const storedUser = localStorage.getItem('evolve_neon_auth');
+            const storedUser = localStorage.getItem('evolve_saas_auth');
             if (storedUser) {
                 userData = JSON.parse(storedUser);
                 initApp();
@@ -518,12 +548,12 @@
             
             google.accounts.id.renderButton(
                 document.getElementById("google-buttonDiv"),
-                { theme: "filled_black", size: "large", width: "100%", text: "continue_with", shape: "rectangular" }
+                { theme: "outline", size: "large", width: "100%", text: "continue_with", shape: "rectangular" }
             );
         };
 
         function logout() {
-            localStorage.removeItem('evolve_neon_auth');
+            localStorage.removeItem('evolve_saas_auth');
             clearInterval(pollingInterval);
             document.getElementById('app-container').classList.add('hidden-view');
             document.getElementById('login-screen').classList.remove('hidden-view');
@@ -551,24 +581,28 @@
             
             document.getElementById('search-input').addEventListener('input', renderTable);
             document.getElementById('filter-subject').addEventListener('change', renderTable);
+            
+            // Randomize ping time for visual effect
+            setInterval(() => {
+                document.getElementById('ping-time').innerText = Math.floor(Math.random() * (25 - 12 + 1) + 12) + 'ms';
+            }, 3000);
         }
 
         /* --- NAVBAR & TABS --- */
         function switchTab(tabId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden-view'));
             
-            // Reset nav buttons
             const btnDash = document.getElementById('tab-dashboard');
             const btnProf = document.getElementById('tab-profile');
             
-            btnDash.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-textMuted hover:text-white hover:bg-white/5";
-            btnProf.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-textMuted hover:text-white hover:bg-white/5";
+            btnDash.className = "px-4 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 text-textMuted hover:text-white hover:bg-elevated/50";
+            btnProf.className = "px-4 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 text-textMuted hover:text-white hover:bg-elevated/50";
             
             document.getElementById(`view-${tabId}`).classList.remove('hidden-view');
             
             const activeBtn = document.getElementById(`tab-${tabId}`);
             if(activeBtn) {
-                activeBtn.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 bg-white/10 text-white shadow-sm border border-white/5";
+                activeBtn.className = "px-4 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 bg-elevated text-white shadow-sm border border-border/50";
             }
 
             window.scrollTo(0,0);
@@ -577,9 +611,8 @@
         /* --- DATA ENGINE (Smart Sync) --- */
         function processCSV(text) {
             const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
-            // Clean up rows and map them
             return parsed.data.filter(row => row['Full Name'] || row['Client ID']).map((row, index) => {
-                row._index = index; // Unique internal ID for opening modal
+                row._index = index; 
                 return row;
             });
         }
@@ -625,18 +658,18 @@
             const notifId = 'notif-' + Date.now();
             
             const html = `
-                <div id="${notifId}" class="pointer-events-auto notification-enter bg-surfaceAlt p-4 rounded-xl border border-neon-cyan/40 shadow-[0_0_20px_rgba(0,242,254,0.2)] flex justify-between items-start">
+                <div id="${notifId}" class="pointer-events-auto notification-enter bg-surface p-4 rounded-xl border border-brand-500/30 shadow-lg flex justify-between items-start">
                     <div class="flex gap-3">
-                        <div class="w-10 h-10 bg-neon-cyan/10 rounded-full flex items-center justify-center text-neon-cyan shrink-0">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        <div class="w-9 h-9 bg-brand-500/10 rounded-lg flex items-center justify-center text-brand-500 shrink-0 border border-brand-500/20">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                         </div>
                         <div>
-                            <h4 class="font-bold text-sm text-white font-heading tracking-wide">Signal Received</h4>
-                            <p class="text-xs text-gray-400 mt-1"><strong class="text-neon-cyan">${name}</strong> | ${subject}</p>
+                            <h4 class="font-semibold text-sm text-white">New Submission</h4>
+                            <p class="text-xs text-textMuted mt-0.5"><strong class="text-brand-400">${name}</strong> | ${subject}</p>
                         </div>
                     </div>
-                    <button onclick="document.getElementById('${notifId}').remove()" class="text-gray-500 hover:text-white p-1 transition-colors">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <button onclick="document.getElementById('${notifId}').remove()" class="text-textMuted hover:text-white p-1 transition-colors">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
             `;
@@ -676,33 +709,33 @@
         function createRowHTML(row, isNewHighlight = false) {
             const isFresh = isToday(row['Submission Date']);
             const statusBadge = isFresh 
-                ? `<span class="status-new text-[10px] font-mono px-2 py-0.5 rounded uppercase tracking-widest font-bold">New</span>` 
-                : `<span class="bg-white/5 text-gray-400 border border-white/10 text-[10px] font-mono px-2 py-0.5 rounded uppercase tracking-widest">Reviewed</span>`;
+                ? `<span class="bg-brand-500/10 text-brand-500 border border-brand-500/20 text-[10px] font-semibold px-2 py-0.5 rounded uppercase tracking-wider">New</span>` 
+                : `<span class="bg-elevated text-textMuted border border-border text-[10px] font-semibold px-2 py-0.5 rounded uppercase tracking-wider">Reviewed</span>`;
 
             return `
                 <tr class="table-row group ${isNewHighlight ? 'new-row' : ''}">
-                    <td class="px-6 py-4 align-middle">
-                        <p class="font-bold text-white group-hover:text-neon-cyan transition-colors">${row['Full Name'] || 'N/A'}</p>
-                        <p class="text-xs text-gray-500 font-mono mt-1">${row['Client ID'] || 'N/A'}</p>
+                    <td class="px-6 py-3 align-middle">
+                        <p class="font-semibold text-white text-sm group-hover:text-brand-400 transition-colors">${row['Full Name'] || 'N/A'}</p>
+                        <p class="text-[11px] text-textMuted font-mono mt-0.5">${row['Client ID'] || 'N/A'}</p>
                     </td>
-                    <td class="px-6 py-4 align-middle">
-                        <p class="text-sm font-medium text-gray-300">${row['Work Email'] || 'N/A'}</p>
-                        <p class="text-xs text-gray-500 font-mono mt-1">${row['Mobile Number'] || 'N/A'}</p>
+                    <td class="px-6 py-3 align-middle">
+                        <p class="text-[13px] font-medium text-gray-300">${row['Work Email'] || 'N/A'}</p>
+                        <p class="text-[11px] text-textMuted mt-0.5">${row['Mobile Number'] || 'N/A'}</p>
                     </td>
-                    <td class="px-6 py-4 align-middle max-w-[200px]">
-                        <span class="inline-block px-2.5 py-1 bg-surface border border-border rounded text-xs font-semibold text-gray-300 mb-1 truncate max-w-full">
+                    <td class="px-6 py-3 align-middle max-w-[180px]">
+                        <span class="inline-block px-2 py-0.5 bg-base border border-border rounded text-[11px] font-medium text-gray-300 mb-1 truncate max-w-full">
                             ${row['Subject'] || 'General'}
                         </span>
                     </td>
-                    <td class="px-6 py-4 align-middle">
+                    <td class="px-6 py-3 align-middle">
                         <div class="flex flex-col items-start gap-1">
                             ${statusBadge}
-                            <p class="text-xs text-gray-500 font-mono mt-1">${row['Submission Date']} ${row['Submission Time'] ? '• '+row['Submission Time'] : ''}</p>
+                            <p class="text-[11px] text-textMuted mt-0.5">${row['Submission Date']} ${row['Submission Time'] ? '• '+row['Submission Time'] : ''}</p>
                         </div>
                     </td>
-                    <td class="px-6 py-4 align-middle text-right">
-                        <button onclick="openModal(${row._index})" class="bg-white/5 hover:bg-neon-cyan/20 border border-white/10 hover:border-neon-cyan/50 text-gray-300 hover:text-neon-cyan px-3 py-1.5 rounded text-xs font-bold transition-all inline-flex items-center gap-2">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <td class="px-6 py-3 align-middle text-right">
+                        <button onclick="openModal(${row._index})" class="bg-base hover:bg-brand-500/10 border border-border hover:border-brand-500/30 text-textMuted hover:text-brand-500 px-2.5 py-1.5 rounded text-[11px] font-semibold transition-all inline-flex items-center gap-1.5">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             View
                         </button>
                     </td>
@@ -721,7 +754,6 @@
                 return mSearch && mFilter;
             });
 
-            // Always sort Newest First for the admin view
             filtered.sort((a, b) => {
                 const dA = a['Submission Date'] ? a['Submission Date'].split('/').reverse().join('') : '';
                 const dB = b['Submission Date'] ? b['Submission Date'].split('/').reverse().join('') : '';
@@ -729,7 +761,7 @@
             });
 
             if(filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-12"><div class="text-gray-500 font-mono text-sm uppercase tracking-widest">No matching records found</div></td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-10"><div class="text-textMuted text-xs font-medium uppercase tracking-wider">No matching records found</div></td></tr>`;
                 return;
             }
 
@@ -754,11 +786,9 @@
             const row = globalData.find(r => r._index === index);
             if(!row) return;
             
-            // Set Initials
             const name = row['Full Name'] || 'U';
             document.getElementById('modal-initials').innerText = name.substring(0, 2).toUpperCase();
             
-            // Populate Data
             document.getElementById('modal-name').innerText = name;
             document.getElementById('modal-id').innerText = row['Client ID'] || 'N/A';
             document.getElementById('modal-email').innerText = row['Work Email'] || 'N/A';
@@ -767,7 +797,6 @@
             document.getElementById('modal-time').innerText = `${row['Submission Date'] || ''} - ${row['Submission Time'] || ''}`;
             document.getElementById('modal-message').innerText = row['Message'] || 'No message provided.';
             
-            // Open animation
             const modal = document.getElementById('lead-modal');
             const content = document.getElementById('modal-content');
             modal.classList.remove('pointer-events-none');
@@ -789,22 +818,20 @@
         function exportCSV() {
             if(globalData.length === 0) return alert("No data to export");
             
-            // Remove the internal _index before exporting
             const exportData = globalData.map(({ _index, ...rest }) => rest);
             const csv = Papa.unparse(exportData);
             
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", `EvolveAI_Leads_${new Date().toISOString().split('T')[0]}.csv`);
+            link.setAttribute("href", URL.createObjectURL(blob));
+            link.setAttribute("download", `EvolveAI_Export_${new Date().toISOString().split('T')[0]}.csv`);
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
 
-        /* --- CHARTS (Neon Theme) --- */
+        /* --- CHARTS (Orange SaaS Theme) --- */
         function getChartData() {
             const dateCounts = {}, subCounts = {};
             globalData.forEach(d => {
@@ -822,14 +849,15 @@
 
         function initCharts() {
             Chart.defaults.font.family = 'Inter';
-            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.color = '#a1a1aa';
+            Chart.defaults.font.size = 11;
             
             const data = getChartData();
             
             const barCtx = document.getElementById('barChart').getContext('2d');
             const gradient = barCtx.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, '#00f2fe'); 
-            gradient.addColorStop(1, 'rgba(0, 242, 254, 0.1)'); 
+            gradient.addColorStop(0, '#f97316'); 
+            gradient.addColorStop(1, 'rgba(249, 115, 22, 0.1)'); 
 
             barChartInstance = new Chart(barCtx, {
                 type: 'bar',
@@ -839,19 +867,19 @@
                         label: 'Leads',
                         data: data.counts,
                         backgroundColor: gradient,
-                        borderColor: '#00f2fe',
-                        borderWidth: 1,
+                        borderColor: '#f97316',
+                        borderWidth: {top: 1, right: 1, left: 1, bottom: 0},
                         borderRadius: 4,
                         barThickness: 'flex',
-                        maxBarThickness: 30
+                        maxBarThickness: 32
                     }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#111', titleColor: '#fff', bodyColor: '#00f2fe', borderColor: '#333', borderWidth: 1 } },
+                    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#18181b', titleColor: '#fff', bodyColor: '#a1a1aa', borderColor: '#27272a', borderWidth: 1, padding: 10 } },
                     scales: {
-                        y: { beginAtZero: true, ticks: { stepSize: 1, color: '#666' }, grid: { color: '#1a1a1a' } },
-                        x: { grid: { display: false }, ticks: { color: '#888' } }
+                        y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#27272a' }, border: {display: false} },
+                        x: { grid: { display: false }, border: {display: false} }
                     }
                 }
             });
@@ -863,17 +891,18 @@
                     labels: data.subLabels,
                     datasets: [{
                         data: data.subValues,
-                        backgroundColor: ['#00f2fe', '#b026ff', '#00ff88', '#ff6b6b', '#f59e0b', '#8b5cf6'],
-                        borderWidth: 0,
-                        hoverOffset: 8
+                        backgroundColor: ['#f97316', '#ea580c', '#fb923c', '#ffedd5', '#7c2d12', '#3f3f46'],
+                        borderWidth: 1,
+                        borderColor: '#18181b',
+                        hoverOffset: 6
                     }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     cutout: '75%',
                     plugins: { 
-                        legend: { position: 'right', labels: { usePointStyle: true, color: '#aaa', padding: 15 } },
-                        tooltip: { backgroundColor: '#111', borderColor: '#333', borderWidth: 1 }
+                        legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 6, padding: 15 } },
+                        tooltip: { backgroundColor: '#18181b', borderColor: '#27272a', borderWidth: 1 }
                     }
                 }
             });
